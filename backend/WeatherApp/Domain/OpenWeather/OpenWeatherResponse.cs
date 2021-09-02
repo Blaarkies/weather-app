@@ -12,23 +12,23 @@ namespace WeatherApp.Domain.OpenWeather
         [JsonProperty("cnt")]
         public int Cnt;
         [JsonProperty("list")]
-        public Forecast[] List;
+        public OpenWeatherForecast[] List;
         [JsonProperty("city")]
-        public City City;
+        public OpenWeatherCity City;
     }
 
-    public class Forecast
+    public class OpenWeatherForecast
     {
         [JsonProperty("dt")]
         public int Dt;
         [JsonProperty("main")]
-        public MainDetails Main;
+        public OpenWeatherMainDetails Main;
         [JsonProperty("weather")]
-        public WeatherSummary[] Weather;
-        [JsonProperty("specificClouds")]
-        public SpecificCloud SpecificClouds;
+        public OpenWeatherWeatherSummary[] Weather;
+        [JsonProperty("clouds")]
+        public OpenWeatherSpecificCloud Clouds;
         [JsonProperty("wind")]
-        public SpecificWind Wind;
+        public OpenWeatherSpecificWind Wind;
         [JsonProperty("visibility")]
         public decimal Visibility;
         [JsonProperty("pop")]
@@ -37,7 +37,7 @@ namespace WeatherApp.Domain.OpenWeather
         public String Dt_txt;
     }
 
-    public class SpecificWind
+    public class OpenWeatherSpecificWind
     {
         [JsonProperty("speed")]
         public decimal Speed;
@@ -47,13 +47,13 @@ namespace WeatherApp.Domain.OpenWeather
         public decimal Gust;
     }
 
-    public class SpecificCloud
+    public class OpenWeatherSpecificCloud
     {
         [JsonProperty("all")]
         public String All;
     }
 
-    public class WeatherSummary
+    public class OpenWeatherWeatherSummary
     {
         [JsonProperty("id")]
         public int Id;
@@ -65,7 +65,7 @@ namespace WeatherApp.Domain.OpenWeather
         public String Icon;
     }
 
-    public class MainDetails
+    public class OpenWeatherMainDetails
     {
         [JsonProperty("temp")]
         public decimal Temp;
@@ -87,14 +87,14 @@ namespace WeatherApp.Domain.OpenWeather
         public decimal Temp_kf;
     }
 
-    public class City
+    public class OpenWeatherCity
     {
         [JsonProperty("id")]
         public int Id;
         [JsonProperty("name")]
         public String Name;
         [JsonProperty("coord")]
-        public Coordinates Coord;
+        public OpenWeatherCoordinates Coord;
         [JsonProperty("country")]
         public String Country;
         [JsonProperty("population")]
@@ -107,7 +107,7 @@ namespace WeatherApp.Domain.OpenWeather
         public int Sunset;
     }
 
-    public class Coordinates
+    public class OpenWeatherCoordinates
     {
         [JsonProperty("lat")]
         public decimal Lat;

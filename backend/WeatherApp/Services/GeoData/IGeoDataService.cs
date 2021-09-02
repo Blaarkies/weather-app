@@ -10,5 +10,6 @@ namespace WeatherApp.Services.GeoData
     public interface IGeoDataService
     {
         IEnumerable<String> QueryCitiesForName(String search);
+        IEnumerable<String> AllCities();
     }
 }

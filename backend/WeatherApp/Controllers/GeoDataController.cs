@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using WeatherApp.Services.GeoData;
-using WeatherApp.Services.OpenWeather;
+using WeatherApp.Services.Serializer;
 
 namespace WeatherApp.Controllers
 {
@@ -19,21 +14,31 @@ namespace WeatherApp.Controllers
     {
         private readonly ILogger<GeoDataController> _logger;
         private readonly IGeoDataService _geoDataService;
+        private readonly ISerializerService _serializerService;
 
         public GeoDataController(
             ILogger<GeoDataController> logger,
-            IGeoDataService geoDataService)
+            IGeoDataService geoDataService,
+            ISerializerService serializerService)
         {
             _logger = logger;
             _geoDataService = geoDataService;
+            _serializerService = serializerService;
         }
 
         [HttpGet("cities-by-name/{search}")]
         public async Task<IActionResult> Get(String search, CancellationToken cancellationToken)
         {
-            var response = _geoDataService.QueryCitiesForName(search);
+            var cities = _geoDataService.QueryCitiesForName(search);
 
-            return new OkObjectResult(JsonConvert.SerializeObject(response));
+            return new OkObjectResult(_serializerService.Serialize(cities));
+        }
+
+        [HttpGet("cities")]
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        {
+            var cities = _geoDataService.AllCities();
+            return new OkObjectResult(_serializerService.Serialize(cities));
         }
     }
 }

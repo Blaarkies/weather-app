@@ -7,9 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using WeatherApp.Domain;
 using WeatherApp.Services.GeoData;
 using WeatherApp.Services.OpenWeather;
+using WeatherApp.Services.Serializer;
 
 namespace WeatherApp
 {
@@ -29,6 +31,7 @@ namespace WeatherApp
             services.AddSingleton(new OpenWeatherSettings(Configuration));
             services.AddSingleton<IOpenWeatherService, OpenWeatherService>();
             services.AddSingleton<IGeoDataService, GeoDataService>();
+            services.AddSingleton<ISerializerService, SerializerService>();
             services.AddSingleton<HttpClient>();
 
             services.AddControllers()

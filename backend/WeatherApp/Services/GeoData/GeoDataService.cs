@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
 using ExtensionMethods;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WeatherApp.Domain;
-using WeatherApp.Domain.OpenWeather;
 
 namespace WeatherApp.Services.GeoData
 {
@@ -40,8 +33,13 @@ namespace WeatherApp.Services.GeoData
 
         public IEnumerable<String> QueryCitiesForName(String search)
         {
+            return _germanCityNames.Where(name => name.Like(search))
+                .Take(_settings.PageSize);
+        }
+
+        public IEnumerable<String> AllCities()
+        {
             return _germanCityNames
-                .Where(name => name.Like(search))
                 .Take(_settings.PageSize);
         }
     }
