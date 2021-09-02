@@ -1,12 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-    </PropertyGroup>
+      <UserSecretsId>9c96f8c3-5f29-4036-9f60-66c1ee52f98f</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Assets\german-cities.json" />
+      <EmbeddedResource Include="Assets\german-cities.json" />
     </ItemGroup>
 
 </Project>

@@ -38,14 +38,21 @@
         </v-app-bar>-->
 
     <v-main>
-      <v-btn
-          v-on:click="buttonCall()"
-          color="primary"
-      >
-        api request
+      <v-btn @click="weathersCall()">
+        weathers
       </v-btn>
 
-      <div>{{weathers.map(w => w.summary ).join(' ')}}</div>
+      <v-btn @click="getCitiesCall()">
+        cities
+      </v-btn>
+
+      <v-btn @click="openWeatherCall()">
+        openweather
+      </v-btn>
+
+      <div>{{weathers.join(', ')}}</div>
+
+      <div>{{cities.join(', ')}}</div>
 
       <HelloWorld/>
     </v-main>
@@ -55,6 +62,7 @@
 <script>
 import HelloWorld from './components/HelloWorld';
 import axios from "axios";
+import {getCitiesByName, getForecast} from "@/common/retrieve-data";
 
 export default {
   name: 'App',
@@ -65,22 +73,38 @@ export default {
 
   data: () => ({
     weathers: [],
+    cities: [],
   }),
 
   methods: {
-    buttonCall() {
-      axios.get('https://localhost:5001/api/WeatherForecast')
-          .then(response => {
-            this.weathers = response.data;
-          });
+    async weathersCall() {
+      let response = await getForecast('leipzig');
+      this.weathers = response.list
+          .flatMap(l => l.weather.map(w => w.description));
     },
+
+    async getCitiesCall() {
+      let response = await getCitiesByName('lei');
+      this.cities = response;
+    },
+
+    async openWeatherCall() {
+      let apiKey = "secret";
+      let response = await axios.get("https://api.openweathermap.org/data/2.5/forecast?q=leipzig&appid=" + apiKey);
+      console.log(response.data);
+    }
   }
 
 };
 </script>
 
 <style>
-main {
-  background-color: gray !important;
+main div {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+
 }
 </style>

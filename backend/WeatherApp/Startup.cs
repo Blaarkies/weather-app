@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text.Json;
 using System.Web.Http;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using WeatherApp.Domain;
+using WeatherApp.Services.GeoData;
+using WeatherApp.Services.OpenWeather;
 
 namespace WeatherApp
 {
@@ -28,7 +25,20 @@ namespace WeatherApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddSingleton(new Settings(Configuration));
+            services.AddSingleton(new OpenWeatherSettings(Configuration));
+            services.AddSingleton<IOpenWeatherService, OpenWeatherService>();
+            services.AddSingleton<IGeoDataService, GeoDataService>();
+            services.AddSingleton<HttpClient>();
+
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                    options.JsonSerializerOptions.AllowTrailingCommas = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "WeatherApp", Version = "v1"});
@@ -41,13 +51,12 @@ namespace WeatherApp
             });
 
             var config = new HttpConfiguration();
-            // New code
             config.EnableCors();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new {id = RouteParameter.Optional}
             );
         }
 

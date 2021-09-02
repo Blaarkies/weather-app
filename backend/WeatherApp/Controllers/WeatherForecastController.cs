@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using WeatherApp.Services.GeoData;
+using WeatherApp.Services.OpenWeather;
 
 namespace WeatherApp.Controllers
 {
@@ -12,29 +17,23 @@ namespace WeatherApp.Controllers
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IOpenWeatherService _openWeatherService;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
+            IOpenWeatherService openWeatherService,
+            IGeoDataService data)
         {
             _logger = logger;
+            _openWeatherService = openWeatherService;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("{city}")]
+        public async Task<IActionResult> Get(String city, CancellationToken cancellationToken)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-                {
-                    Date = DateTime.Now.AddDays(index),
-                    TemperatureC = rng.Next(-20, 55),
-                    Summary = Summaries[rng.Next(Summaries.Length)]
-                })
-                .ToArray();
+            var response = await _openWeatherService.Get5DayForecast(city, cancellationToken);
+            return new OkObjectResult(JsonConvert.SerializeObject(response));
         }
     }
 }
