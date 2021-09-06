@@ -21,6 +21,8 @@ namespace WeatherApp.Domain.OpenWeather
     {
         [JsonProperty("dt")]
         public int Dt;
+        [JsonProperty("dt_txt")]
+        public String Dt_txt;
         [JsonProperty("main")]
         public OpenWeatherMainDetails Main;
         [JsonProperty("weather")]
@@ -33,8 +35,6 @@ namespace WeatherApp.Domain.OpenWeather
         public decimal Visibility;
         [JsonProperty("pop")]
         public decimal Pop;
-        [JsonProperty("dt_txt")]
-        public String Dt_txt;
     }
 
     public class OpenWeatherSpecificWind

@@ -5,9 +5,7 @@
       :items="items"
       :search-input.sync="search"
       cache-items
-      class=""
       flat
-      solo
       label="City"
       placeholder="Select a city"
       no-data-text="Could not find a match"
@@ -44,9 +42,10 @@ export default {
     querySelections(query) {
       this.loading = true
 
-      let request = !query
+      let safeQuery = query?.trim();
+      let request = !safeQuery
           ? getCitiesAll()
-          : getCitiesByName(query);
+          : getCitiesByName(safeQuery);
 
       request
           .then(cities => this.items = cities)

@@ -3,7 +3,15 @@
     <v-app-bar
         app
         color="primary"
+        dark
     >
+      <div class="toolbar-layout">
+        <v-btn icon>
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+
+        <v-app-bar-title>Weather Forecasts</v-app-bar-title>
+      </div>
     </v-app-bar>
 
     <v-main>
@@ -49,5 +57,11 @@ main > div {
 .overlap-container > * {
   grid-column: 1/1;
   grid-row: 1/1;
+}
+
+.toolbar-layout {
+  display: flex;
+  gap: var(--gap-content-section);
+  align-items: center;
 }
 </style>

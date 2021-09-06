@@ -2,8 +2,11 @@ import axios from "axios";
 
 const apiUrl = `https://localhost:5001/api/`;
 
-export async function getForecast(city) {
-    const response = await axios.get(`${apiUrl}WeatherForecast/${city}`);
+export async function getForecast(city, zipCode) {
+    const response = await axios.get(`${apiUrl}Weather/forecast`,
+        {
+            params: {city, zipCode}
+        });
     return response.data;
 }
 

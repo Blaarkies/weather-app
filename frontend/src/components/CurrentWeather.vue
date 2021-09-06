@@ -4,8 +4,11 @@
 
     <div class="layout" v-else>
       <div class="title-area">
-        <v-card-title class="pa-0">Current Weather</v-card-title>
-        <v-card-subtitle class="ma-0 pa-0 pl-4">{{ formatTime(weather.time) }}</v-card-subtitle>
+        <div class="title-layout">
+          <v-card-title class="pa-0">Current Weather</v-card-title>
+          <v-card-title class="pa-0">{{ city.name }}</v-card-title>
+        </div>
+        <v-card-subtitle class="ma-0 pa-0 pl-4">{{ formatTime(weather.dateTime) }}</v-card-subtitle>
       </div>
 
       <div class="left-column">
@@ -27,13 +30,13 @@
       </div>
 
       <div class="right-column">
-        <div>Direction</div>
+        <div>Wind Direction</div>
         <div>{{ weather.windDirection }}</div>
 
-        <div>Speed</div>
+        <div>Wind Speed</div>
         <div>{{ formatWindSpeed(weather.windSpeed) }} km/h</div>
 
-        <div>Gusts</div>
+        <div>Wind Gusts</div>
         <div>{{ formatWindSpeed(weather.windGusts) }} km/h</div>
       </div>
     </div>
@@ -50,6 +53,10 @@ export default {
       default: () => ({}),
     },
     loadingWeather: {},
+    city: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data: () => ({}),
   methods: {
@@ -63,8 +70,7 @@ export default {
       if (!value) {
         return '';
       }
-      let date = new Date(this.weather.time);
-      return date.toLocaleTimeString();
+      return new Date(value).toLocaleTimeString();
     },
   },
 }
@@ -81,6 +87,11 @@ export default {
 
 .layout .title-area {
   grid-area: title;
+}
+
+.title-layout {
+  display: flex;
+  justify-content: space-between;
 }
 
 .layout .left-column {
