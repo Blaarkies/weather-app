@@ -76,34 +76,34 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .layout {
   display: grid;
   grid-template-areas:
       'title title'
       'left right';
   gap: 0 var(--gap-content-section);
-}
 
-.layout .title-area {
-  grid-area: title;
-}
+  .title-area {
+    grid-area: title;
+  }
 
-.title-layout {
-  display: flex;
-  justify-content: space-between;
-}
+  .title-layout {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.layout .left-column {
-  grid-area: left;
-}
+  .left-column {
+    grid-area: left;
+  }
 
-.layout .right-column {
-  grid-area: right;
-  display: grid;
-  grid-template-columns: auto auto;
-  align-content: center;
-  gap: 0 var(--gap-table-column);
+  .right-column {
+    grid-area: right;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-content: center;
+    gap: 0 var(--gap-table-column);
+  }
 }
 
 .icon-temp-layout {
@@ -113,19 +113,20 @@ export default {
       'icon temp-feel';
   gap: var(--gap-tiles) 0;
   grid-auto-rows: 1fr;
-}
 
-.icon-temp-layout .icon {
-  grid-area: icon;
-}
 
-.icon-temp-layout .temp-real {
-  grid-area: temp-real;
-  align-self: end;
-}
+  .icon {
+    grid-area: icon;
+  }
 
-.icon-temp-layout .temp-feel {
-  grid-area: temp-feel;
+  .temp-real {
+    grid-area: temp-real;
+    align-self: end;
+  }
+
+  .temp-feel {
+    grid-area: temp-feel;
+  }
 }
 
 .weather-description {

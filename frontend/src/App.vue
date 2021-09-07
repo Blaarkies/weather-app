@@ -6,32 +6,51 @@
         dark
     >
       <div class="toolbar-layout">
-        <v-btn icon>
-          <v-icon>mdi-menu</v-icon>
-        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
 
-        <v-app-bar-title>Weather Forecasts</v-app-bar-title>
+          <v-list class="menu-list">
+            <v-list-item to="/forecast">forecast</v-list-item>
+            <v-list-item to="/history">history</v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-app-bar-title>{{ title }}</v-app-bar-title>
       </div>
     </v-app-bar>
 
     <v-main>
-      <PageWeatherForecasts></PageWeatherForecasts>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import PageWeatherForecasts from "@/components/PageWeatherForecasts";
-
 export default {
   name: 'App',
-  components: {
-    PageWeatherForecasts,
+  data: () => ({
+    title: null,
+  }),
+  watch: {
+    '$route.name'(name) {
+      this.title = name;
+    }
   },
+  created() {
+    this.title = this.$route.name;
+  }
 };
 </script>
 
-<style>
+<style lang="scss">
 :root {
   --padding-card: 20px;
   --gap-tiles: 10px;
@@ -52,16 +71,25 @@ main > div {
 
 .overlap-container {
   display: grid;
-}
 
-.overlap-container > * {
-  grid-column: 1/1;
-  grid-row: 1/1;
+  > * {
+    grid-column: 1/1;
+    grid-row: 1/1;
+  }
 }
 
 .toolbar-layout {
   display: flex;
   gap: var(--gap-content-section);
   align-items: center;
+}
+
+.menu-list > a {
+  text-transform: capitalize;
+}
+
+.icon-pictogram {
+  font-size: 100px !important;
+  width: 100%;
 }
 </style>
