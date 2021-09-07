@@ -4,16 +4,18 @@
       label="Zip Code"
       v-model="zipCode"
       :rules="[germanZipCodeRule]"
-  ></v-text-field>
+  />
 </template>
 
 <script>
 export default {
   name: "ZipCodeInput",
-  emits: ['inputZipCode'],
+  emits: {inputZipCode: Number},
+
   data: () => ({
     zipCode: null,
   }),
+
   watch: {
     zipCode(value) {
       if (value && this.germanZipCodeRule(value) === true) {
@@ -21,6 +23,7 @@ export default {
       }
     },
   },
+
   methods: {
     germanZipCodeRule(zipCode) {
       if (zipCode?.length === 0) {

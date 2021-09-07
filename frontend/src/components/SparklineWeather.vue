@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-card-subtitle>{{title}}</v-card-subtitle>
+    <v-card-subtitle>{{ title }}</v-card-subtitle>
 
     <div class="overlap-container">
       <v-sparkline
           class="pl-8"
-          :value="values"
+          :value="yValues"
           :labels="xLabels"
           :show-labels="false"
           :smooth="10"
@@ -20,10 +20,10 @@
       <div class="y-axis-container">
         <h5
             class="text--disabled"
-            v-for="label in yLabels"
-            :key="label"
+            v-for="(label, i) in yLabels"
+            :key="label + i"
         >
-          {{ label }}&nbsp;{{unitOfMeasure}}
+          {{ label }}&nbsp;{{ unitOfMeasure }}
         </h5>
       </div>
     </div>
@@ -38,20 +38,27 @@ export default {
       type: Array,
       default: () => ([]),
     },
-    title: {},
-    unitOfMeasure: {},
+
+    title: String,
+
+    unitOfMeasure: String,
+
+    // callback that selects the graph y-values
     valueSelector: {
       type: Function,
       default: () => ((i) => i),
     },
   },
+
   data: () => ({
     daysOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   }),
+
   computed: {
-    values() {
+    yValues() {
       return this.weather.map(this.valueSelector);
     },
+
     xLabels() {
       if (!this.weather.length) {
         return [];
@@ -60,8 +67,10 @@ export default {
       return this.weather
           .map(w => [
             new Date(w.dateTime),
-            (new Date(w.dateTime) - firstDate) / 3.6e6
+            (new Date(w.dateTime) - firstDate) / 3.6e6 // the amount hours since firstDate
           ])
+          // create an array where the day's name populates the first index for every 24 hours,
+          // and whitespace strings to the rest
           .reduce((sum, [dt, current]) => {
                 let output = ' ';
                 sum.counter += current - sum.previous;
@@ -77,16 +86,17 @@ export default {
               {previous: 0, counter: 0, output: []})
           .output;
     },
+
     yLabels() {
       if (!this.weather.length) {
         return [];
       }
       let maxIndex = this.weather.length - 1;
       let indexesToInspect = [0, .5, 1].map(r => Math.floor(maxIndex * r));
-      let weatherSortedByWindSpeed = this.weather
+      let weatherSortedByValueSelector = this.weather
           .slice().sort((a, b) => this.valueSelector(b) - this.valueSelector(a));
       return indexesToInspect.map(inspectIndex =>
-          this.valueSelector(weatherSortedByWindSpeed[inspectIndex]).toFixed(0));
+          this.valueSelector(weatherSortedByValueSelector[inspectIndex]).toFixed(0));
     },
   },
 }

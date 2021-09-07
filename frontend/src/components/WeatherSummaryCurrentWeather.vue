@@ -2,7 +2,7 @@
   <div>
     <v-skeleton-loader type="card" v-if="loadingWeather"/>
 
-    <div class="layout" v-else>
+    <div class="layout" v-else-if="weather.icon">
       <div class="title-area">
         <div class="title-layout">
           <v-card-title class="pa-0">Current Weather</v-card-title>
@@ -17,7 +17,7 @@
             <v-img
                 class="icon"
                 :src="`http://openweathermap.org/img/wn/${weather.icon}@2x.png`"
-                :key="weather.Icon"
+                :key="weather.icon"
             />
           </transition>
           <h2 class="temp-real">{{ formatTemperature(weather.temperature) }} °C</h2>
@@ -46,13 +46,13 @@
 
 <script>
 export default {
-  name: "CurrentWeather",
+  name: 'CurrentWeather',
   props: {
     weather: {
       type: Object,
       default: () => ({}),
     },
-    loadingWeather: {},
+    loadingWeather: Boolean,
     city: {
       type: Object,
       default: () => ({}),
@@ -73,7 +73,7 @@ export default {
       return new Date(value).toLocaleTimeString();
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

@@ -32,10 +32,14 @@ export default {
   name: "HistoryWeekSelector",
   props: {
     cities: {
+      type: Array,
       default: () => [],
     }
   },
-  emits: ['select'],
+  emits: {
+    select: Object
+  },
+
   methods: {
     selectCityAtDate(city, week) {
       this.$emit('select', 'look here');

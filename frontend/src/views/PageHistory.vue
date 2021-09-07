@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import HistoryWeekSelector from "@/components/HistoryWeekSelector";
+import HistoryWeekSelector from "@/components/SelectorHistoryWeek";
 
 export default {
   name: "PageHistory",

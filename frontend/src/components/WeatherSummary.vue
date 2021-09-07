@@ -22,20 +22,34 @@
           width="auto"
           class="graph-weather-card"
       >
-        <FutureWeather :weather="weather" :loadingWeather="loadingWeather"/>
+        <FutureWeather
+            title="Future Weather"
+            :weather="weather"
+            :loadingWeather="loadingWeather"
+        />
       </v-card>
     </v-expand-transition>
   </div>
 </template>
 
 <script>
-import CurrentWeather from "@/components/CurrentWeather";
-import FutureWeather from "@/components/FutureWeather";
+import CurrentWeather from "@/components/WeatherSummaryCurrentWeather";
+import FutureWeather from "@/components/WeatherDataTimeline.vue";
 
 export default {
   name: "WeatherSummary",
   components: {FutureWeather, CurrentWeather},
-  props: ['weather', 'loadingWeather', 'city'],
+  props: {
+    weather: {
+      type: Array,
+      default: () => [],
+    },
+    loadingWeather: Boolean,
+    city: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
 }
 </script>
 

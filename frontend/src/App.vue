@@ -23,7 +23,7 @@
           </v-list>
         </v-menu>
 
-        <v-app-bar-title>{{ title }}</v-app-bar-title>
+        <v-app-bar-title class="app-bar-title-no-truncation">{{ title }}</v-app-bar-title>
       </div>
     </v-app-bar>
 
@@ -36,17 +36,11 @@
 <script>
 export default {
   name: 'App',
-  data: () => ({
-    title: null,
-  }),
-  watch: {
-    '$route.name'(name) {
-      this.title = name;
-    }
+  computed: {
+    title() {
+      return this.$route.name;
+    },
   },
-  created() {
-    this.title = this.$route.name;
-  }
 };
 </script>
 
@@ -60,7 +54,6 @@ export default {
 
 main > div {
   background-color: whitesmoke;
-  /*color: #fff;*/
   padding: 20px;
   display: grid;
   grid-auto-rows: max-content;
@@ -82,6 +75,12 @@ main > div {
   display: flex;
   gap: var(--gap-content-section);
   align-items: center;
+
+  .app-bar-title-no-truncation {
+    .v-app-bar-title__content {
+      width: unset;
+    }
+  }
 }
 
 .menu-list > a {

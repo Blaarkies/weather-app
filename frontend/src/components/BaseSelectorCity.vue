@@ -9,15 +9,17 @@
       label="City"
       placeholder="Select a city"
       no-data-text="Could not find a match"
-  ></v-autocomplete>
+  />
 </template>
 
 <script>
-import {getCitiesAll, getCitiesByName} from "@/common/retrieve-data";
+import {getCitiesAll, getCitiesByName} from "@/helpers";
 
 export default {
   name: "CitySelector",
-  emits: ['select'],
+  emits: {
+    select: Object,
+  },
 
   data() {
     return {
@@ -27,9 +29,11 @@ export default {
       select: null,
     }
   },
+
   created() {
     this.querySelections('');
   },
+
   watch: {
     search(value) {
       value && value !== this.select && this.querySelections(value)
@@ -38,6 +42,7 @@ export default {
       this.$emit('select', value ?? '');
     },
   },
+
   methods: {
     querySelections(query) {
       this.loading = true

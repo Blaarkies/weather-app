@@ -7,12 +7,12 @@ const routes = [
     {
         path: '/forecast',
         name: 'Weather Forecast',
-        component: () => import('@/components/PageWeatherForecasts'),
+        component: () => import('@/views/PageWeatherForecasts'),
     },
     {
         path: '/history',
         name: 'Historic Weather',
-        component: () => import('@/components/PageHistory'),
+        component: () => import('@/views/PageHistory'),
     },
     {
         path: '/',

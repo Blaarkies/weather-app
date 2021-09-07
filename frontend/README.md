@@ -1,6 +1,16 @@
-# frontend
+# Crystal Weather
 
-## Project setup
+### An app to view weather forecasts in any German city.
+
+Users can view the current weather forecast for a specific city by selecting that city by name or by zip code.
+
+---
+---
+## _Developer information_
+
+This project requires the Crystal Weather API to run with the same configuration in order to function.
+
+### Project setup
 ```
 npm install
 ```

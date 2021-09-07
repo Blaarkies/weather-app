@@ -35,11 +35,10 @@
 </template>
 
 <script>
-import CitySelector from "@/components/CitySelector";
+import CitySelector from "@/components/BaseSelectorCity";
 import WeatherSummary from "@/components/WeatherSummary";
-import {getForecast} from "@/common/retrieve-data";
-import ZipCodeInput from "@/components/ZipCodeInput";
-import {getMessageFromError} from "@/common/error-handling";
+import {getForecast, getMessageFromError} from "@/helpers";
+import ZipCodeInput from "@/components/BaseInputZipCode";
 
 export default {
   name: "PageWeatherForecasts",
