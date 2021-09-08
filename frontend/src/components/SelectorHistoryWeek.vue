@@ -1,5 +1,5 @@
 <template>
-  <v-list class="city-data-list">
+  <v-list>
     <v-list-group
         v-for="city in cities"
         :key="city.title"
@@ -7,18 +7,18 @@
     >
       <template v-slot:activator>
         <v-list-item-content>
-          <v-list-item-title v-text="city.title"/>
+          <v-list-item-title v-text="city.name"/>
         </v-list-item-content>
       </template>
 
       <v-list-item-group class="pl-4">
         <v-list-item
-            v-for="week in city.weeks"
-            :key="week.title"
-            @click="selectCityAtDate(city, week)"
+            v-for="(week, i) in city.weeks"
+            :key="week.name + i"
+            @click="selectCityAtDate(city.name, week.dt)"
         >
           <v-list-item-content>
-            <v-list-item-title v-text="week.title"/>
+            <v-list-item-title v-text="week.name"/>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -29,28 +29,22 @@
 
 <script>
 export default {
-  name: "HistoryWeekSelector",
+  name: "SelectorHistoryWeek",
   props: {
     cities: {
       type: Array,
       default: () => [],
     }
   },
-  emits: {
-    select: Object
-  },
+  emits: {select: Object},
 
   methods: {
-    selectCityAtDate(city, week) {
-      this.$emit('select', 'look here');
-      console.log('plain usage', city, week);
+    selectCityAtDate(name, dt) {
+      this.$emit('select', {name, dt});
     },
   },
 }
 </script>
 
 <style scoped>
-.city-data-list {
-
-}
 </style>

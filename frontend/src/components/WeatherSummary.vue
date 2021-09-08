@@ -7,7 +7,7 @@
           width="auto"
           class="current-weather-card"
       >
-        <CurrentWeather
+        <WeatherSummaryCurrentWeather
             :weather="weather[0]"
             :loadingWeather="loadingWeather"
             :city="city"
@@ -20,9 +20,8 @@
           v-show="weather.length"
           height="auto"
           width="auto"
-          class="graph-weather-card"
       >
-        <FutureWeather
+        <WeatherDataTimeline
             title="Future Weather"
             :weather="weather"
             :loadingWeather="loadingWeather"
@@ -33,18 +32,20 @@
 </template>
 
 <script>
-import CurrentWeather from "@/components/WeatherSummaryCurrentWeather";
-import FutureWeather from "@/components/WeatherDataTimeline.vue";
+import WeatherSummaryCurrentWeather from "@/components/WeatherSummaryCurrentWeather";
+import WeatherDataTimeline from "@/components/WeatherDataTimeline.vue";
 
 export default {
   name: "WeatherSummary",
-  components: {FutureWeather, CurrentWeather},
+  components: {WeatherDataTimeline, WeatherSummaryCurrentWeather},
   props: {
     weather: {
       type: Array,
       default: () => [],
     },
+
     loadingWeather: Boolean,
+
     city: {
       type: Object,
       default: () => ({}),

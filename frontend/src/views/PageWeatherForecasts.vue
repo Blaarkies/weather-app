@@ -1,10 +1,16 @@
 <template>
-  <div class="layout">
+  <div>
     <v-card-title>Select a city to view its forecast</v-card-title>
 
     <div class="selectors">
-      <CitySelector :key="'city'+citySelectorKey" @select="setWeatherForCity($event)"/>
-      <ZipCodeInput :key="'zip'+zipCodeSelectorKey" @inputZipCode="setWeatherForZipCode($event)"/>
+      <BaseSelectorCity
+          :key="'city'+citySelectorKey"
+          @select="setWeatherByCity($event)"
+      />
+      <BaseInputZipCode
+          :key="'zip'+zipCodeSelectorKey"
+          @inputZipCode="setWeatherByZipCode($event)"
+      />
     </div>
 
     <div class="overlap-container">
@@ -23,52 +29,39 @@
         />
       </v-expand-x-transition>
     </div>
-
-    <v-snackbar
-        v-model="snackBarOpen"
-        :timeout="10e3"
-        color="deep-orange"
-    >
-      {{ snackBarMessage }}
-    </v-snackbar>
   </div>
 </template>
 
 <script>
-import CitySelector from "@/components/BaseSelectorCity";
+import BaseSelectorCity from "@/components/BaseSelectorCity";
 import WeatherSummary from "@/components/WeatherSummary";
 import {getForecast, getMessageFromError} from "@/helpers";
-import ZipCodeInput from "@/components/BaseInputZipCode";
+import BaseInputZipCode from "@/components/BaseInputZipCode";
 
 export default {
   name: "PageWeatherForecasts",
   components: {
-    ZipCodeInput,
+    BaseInputZipCode,
     WeatherSummary,
-    CitySelector,
+    BaseSelectorCity,
   },
   data: () => ({
     weather: [],
     city: {},
     loadingWeather: null,
-    snackBarOpen: null,
-    snackBarMessage: null,
     citySelectorKey: 0,
     zipCodeSelectorKey: 0,
   }),
   methods: {
     setSnackBarMessage(error) {
-      this.snackBarMessage = getMessageFromError(error);
-      this.snackBarOpen = true;
+      this.$root.snackbar.postError({message: getMessageFromError(error)})
     },
-    async setWeatherForCity(cityName) {
+
+    async setWeatherByCity(cityName) {
       this.loadingWeather = true;
 
       getForecast(cityName)
-          .then(response => {
-            this.weather = response.weatherList;
-            this.city = response.city;
-          })
+          .then(({city, weatherList}) => this.setWeather(city, weatherList))
           .catch(error => {
             this.setSnackBarMessage(error);
             this.citySelectorKey++;
@@ -80,14 +73,12 @@ export default {
             this.zipCodeSelectorKey++;
           });
     },
-    async setWeatherForZipCode(zipCode) {
+
+    async setWeatherByZipCode(zipCode) {
       this.loadingWeather = true;
 
       getForecast(null, zipCode)
-          .then(response => {
-            this.weather = response.weatherList;
-            this.city = response.city;
-          })
+          .then(({city, weatherList}) => this.setWeather(city, weatherList))
           .catch(error => {
             this.setSnackBarMessage(error);
             this.weather = [];
@@ -98,17 +89,19 @@ export default {
             this.citySelectorKey++;
           });
     },
+
+    setWeather(city, weatherList) {
+      this.city = city;
+      this.weather = weatherList;
+
+      this.$store.dispatch('saveCityWeather', {city, weatherList});
+    },
   },
 
 }
 </script>
 
 <style scoped>
-.layout {
-  /*display: grid;*/
-  /*gap: var(--gap-content-section);*/
-}
-
 .weather-loading {
   justify-self: center;
 }

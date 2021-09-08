@@ -17,6 +17,7 @@
             <v-img
                 class="icon"
                 :src="`http://openweathermap.org/img/wn/${weather.icon}@2x.png`"
+                :alt="'A visualization of the current weather, specifically ' + weather.description"
                 :key="weather.icon"
             />
           </transition>
@@ -45,32 +46,39 @@
 </template>
 
 <script>
+import {formatDateToHourMinute} from "@/helpers";
+
 export default {
-  name: 'CurrentWeather',
+  name: 'WeatherSummaryCurrentWeather',
   props: {
     weather: {
       type: Object,
       default: () => ({}),
     },
+
     loadingWeather: Boolean,
+
     city: {
       type: Object,
       default: () => ({}),
     },
   },
+
   data: () => ({}),
+
   methods: {
     formatTemperature(value) {
       return value?.toFixed(0);
     },
+
     formatWindSpeed(value) {
       return value?.toFixed(0);
     },
+
     formatTime(value) {
-      if (!value) {
-        return '';
-      }
-      return new Date(value).toLocaleTimeString();
+      return value
+          ? formatDateToHourMinute(new Date(value))
+          : '';
     },
   },
 };

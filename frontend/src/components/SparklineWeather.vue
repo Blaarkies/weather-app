@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: "WeatherSparkline",
+  name: "SparklineWeather",
   props: {
     weather: {
       type: Array,

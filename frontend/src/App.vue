@@ -6,7 +6,12 @@
         dark
     >
       <div class="toolbar-layout">
-        <v-menu offset-y>
+        <v-menu
+            absolute
+            left
+            top
+            offset-y
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
                 icon
@@ -24,22 +29,35 @@
         </v-menu>
 
         <v-app-bar-title class="app-bar-title-no-truncation">{{ title }}</v-app-bar-title>
+
+        <ButtonClearCachedStorage/>
       </div>
     </v-app-bar>
 
     <v-main>
-      <router-view></router-view>
+      <div class="content-layout">
+        <router-view></router-view>
+      </div>
     </v-main>
+
+    <TheSnackbar ref="snackbar"/>
   </v-app>
 </template>
 
 <script>
+import ButtonClearCachedStorage from "@/components/ButtonClearCachedStorage";
+import TheSnackbar from "@/components/TheSnackbar";
+
 export default {
   name: 'App',
+  components: {TheSnackbar, ButtonClearCachedStorage},
   computed: {
     title() {
       return this.$route.name;
     },
+  },
+  mounted() {
+    this.$root.snackbar = this.$refs.snackbar;
   },
 };
 </script>
@@ -50,15 +68,17 @@ export default {
   --gap-tiles: 10px;
   --gap-content-section: 20px;
   --gap-table-column: 20px;
+  --color-warn: #dc3545;
 }
 
-main > div {
+.content-layout {
   background-color: whitesmoke;
   padding: 20px;
-  display: grid;
-  grid-auto-rows: max-content;
-  gap: 10px;
-  max-width: 600px !important;
+  height: 100%;
+  //display: grid;
+  //grid-auto-rows: max-content;
+  //gap: 10px;
+  //max-width: 600px !important;
 
 }
 
@@ -72,9 +92,11 @@ main > div {
 }
 
 .toolbar-layout {
-  display: flex;
+  width: 100%;
+  display: grid;
   gap: var(--gap-content-section);
   align-items: center;
+  grid-template-columns: max-content auto max-content;
 
   .app-bar-title-no-truncation {
     .v-app-bar-title__content {
@@ -83,8 +105,12 @@ main > div {
   }
 }
 
-.menu-list > a {
-  text-transform: capitalize;
+.menu-list {
+  min-width: 250px;
+
+  > a {
+    text-transform: capitalize;
+  }
 }
 
 .icon-pictogram {

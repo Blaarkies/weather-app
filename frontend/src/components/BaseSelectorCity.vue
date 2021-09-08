@@ -8,7 +8,7 @@
       flat
       label="City"
       placeholder="Select a city"
-      no-data-text="Could not find a match"
+      no-data-text="Could not match a city"
   />
 </template>
 
@@ -16,7 +16,7 @@
 import {getCitiesAll, getCitiesByName} from "@/helpers";
 
 export default {
-  name: "CitySelector",
+  name: "BaseSelectorCity",
   emits: {
     select: Object,
   },

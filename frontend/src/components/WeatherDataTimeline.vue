@@ -9,21 +9,21 @@
     <div class="layout" v-else>
       <v-card-title class="pa-0">{{ title }}</v-card-title>
 
-      <WeatherSparkline
+      <SparklineWeather
           title="Temperature"
           unit-of-measure="°C"
           :value-selector="weather => weather.temperature"
           :weather="weather"
       />
 
-      <WeatherSparkline
+      <SparklineWeather
           title="Wind"
           unit-of-measure="km/h"
           :value-selector="weather => weather.windSpeed"
           :weather="weather"
       />
 
-      <WeatherSparkline
+      <SparklineWeather
           title="Humidity"
           unit-of-measure="%"
           :value-selector="weather => weather.humidity"
@@ -35,11 +35,11 @@
 </template>
 
 <script>
-import WeatherSparkline from "@/components/SparklineWeather";
+import SparklineWeather from "@/components/SparklineWeather";
 
 export default {
-  name: "FutureWeather",
-  components: {WeatherSparkline},
+  name: "WeatherDataTimeline",
+  components: {SparklineWeather},
   props: {
     title: String,
     weather: {

@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "ZipCodeInput",
+  name: "BaseInputZipCode",
   emits: {inputZipCode: Number},
 
   data: () => ({
