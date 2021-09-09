@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
 
     <v-expand-transition>
       <v-card
@@ -18,23 +18,29 @@
 
 
     <div class="layout" v-if="cities.length > 0">
-      <v-card class="city-list">
-        <SelectorHistoryWeek
-            :cities="cities"
-            @select="selectHistoryWeather($event)"
-        />
-      </v-card>
+      <div>
+        <v-card-title class="text-break">Select a week to see the cached forecast</v-card-title>
+
+        <v-card class="city-list">
+          <SelectorHistoryWeek
+              :cities="cities"
+              @select="selectHistoryWeather($event)"
+          />
+        </v-card>
+      </div>
 
       <v-expand-transition>
         <v-card
             v-if="cityWeather"
             height="auto"
             width="auto"
+            class="weather-timeline-card"
         >
           <WeatherDataTimeline
               :title="`Forecasts for ${cityWeather.name} from ${cityWeather.date}`"
               :weather="cityWeather.weather"
               :loading-weather="loadingWeather"
+              listVertically
           />
         </v-card>
       </v-expand-transition>
@@ -57,7 +63,7 @@ export default {
   }),
   methods: {
     selectHistoryWeather({name, dt}) {
-      let msToHour = 36e5;
+      const msToHour = 36e5;
       this.cityWeather = {
         name,
         date: formatDateToDayMonth(dt),
@@ -80,7 +86,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'src/styles/media';
+
 .layout {
   height: 100%;
   display: grid;
@@ -93,8 +101,26 @@ export default {
   padding: var(--padding-card);
 }
 
+.weather-timeline-card {
+  padding: var(--padding-card);
+}
+
 .city-list {
   max-height: 300px;
   overflow-y: auto;
+}
+
+@media screen and ($media-above-tablets) {
+  .city-list {
+    max-height: 500px;
+  }
+
+  .layout {
+    grid-template-columns: auto minmax(400px, auto);
+  }
+
+  .container {
+    max-width: 900px;
+  }
 }
 </style>

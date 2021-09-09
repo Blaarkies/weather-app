@@ -49,7 +49,7 @@
 import {formatDateToHourMinute} from "@/helpers";
 
 export default {
-  name: 'WeatherSummaryCurrentWeather',
+  name: 'CurrentWeather',
   props: {
     weather: {
       type: Object,
@@ -63,8 +63,6 @@ export default {
       default: () => ({}),
     },
   },
-
-  data: () => ({}),
 
   methods: {
     formatTemperature(value) {

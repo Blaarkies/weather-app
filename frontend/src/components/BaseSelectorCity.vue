@@ -17,9 +17,7 @@ import {getCitiesAll, getCitiesByName} from "@/helpers";
 
 export default {
   name: "BaseSelectorCity",
-  emits: {
-    select: Object,
-  },
+  emits: {select: Object},
 
   data() {
     return {
@@ -36,7 +34,9 @@ export default {
 
   watch: {
     search(value) {
-      value && value !== this.select && this.querySelections(value)
+      (value || value === '')
+      && value !== this.select
+      && this.querySelections(value)
     },
     select(value) {
       this.$emit('select', value ?? '');

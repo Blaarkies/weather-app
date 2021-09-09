@@ -49,7 +49,7 @@ import ButtonClearCachedStorage from "@/components/ButtonClearCachedStorage";
 import TheSnackbar from "@/components/TheSnackbar";
 
 export default {
-  name: 'App',
+  name: 'TheApp',
   components: {TheSnackbar, ButtonClearCachedStorage},
   computed: {
     title() {
@@ -63,6 +63,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'src/styles/media';
+
 :root {
   --padding-card: 20px;
   --gap-tiles: 10px;
@@ -75,11 +77,6 @@ export default {
   background-color: whitesmoke;
   padding: 20px;
   height: 100%;
-  //display: grid;
-  //grid-auto-rows: max-content;
-  //gap: 10px;
-  //max-width: 600px !important;
-
 }
 
 .overlap-container {
@@ -116,5 +113,15 @@ export default {
 .icon-pictogram {
   font-size: 100px !important;
   width: 100%;
+}
+
+@media screen and ($media-above-tablets) {
+  .content-layout {
+
+    > * {
+      margin: auto;
+      padding: 20px;
+    }
+  }
 }
 </style>

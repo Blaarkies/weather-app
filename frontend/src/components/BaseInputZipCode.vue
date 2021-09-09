@@ -4,6 +4,7 @@
       label="Zip Code"
       v-model="zipCode"
       :rules="[germanZipCodeRule]"
+      @input="tryToEmit($event)"
   />
 </template>
 
@@ -16,15 +17,13 @@ export default {
     zipCode: null,
   }),
 
-  watch: {
-    zipCode(value) {
+  methods: {
+    tryToEmit(value) {
       if (value && this.germanZipCodeRule(value) === true) {
         this.$emit('inputZipCode', value);
       }
     },
-  },
 
-  methods: {
     germanZipCodeRule(zipCode) {
       if (zipCode?.length === 0) {
         return true;

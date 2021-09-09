@@ -4,7 +4,7 @@
 
     <div class="overlap-container">
       <v-sparkline
-          class="pl-8"
+          class="pl-10"
           :value="yValues"
           :labels="xLabels"
           :show-labels="false"
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import {formatDateToWeekDay} from '@/helpers';
+
 export default {
   name: "SparklineWeather",
   props: {
@@ -49,10 +51,6 @@ export default {
       default: () => ((i) => i),
     },
   },
-
-  data: () => ({
-    daysOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  }),
 
   computed: {
     yValues() {
@@ -76,7 +74,7 @@ export default {
                 sum.counter += current - sum.previous;
                 if (sum.counter >= 24) {
                   sum.counter = 0;
-                  output = this.daysOfWeek[dt.getDay()]
+                  output = formatDateToWeekDay(dt);
                 }
 
                 sum.previous = current;
@@ -105,5 +103,9 @@ export default {
 <style scoped>
 .y-axis-container {
   display: grid;
+  justify-items: end;
+  justify-self: start;
+  width: 50px;
+  margin-left: -4px;
 }
 </style>

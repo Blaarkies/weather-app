@@ -6,29 +6,31 @@
         v-if="loadingWeather"
     />
 
-    <div class="layout" v-else>
-      <v-card-title class="pa-0">{{ title }}</v-card-title>
+    <div v-else>
+      <v-card-title class="pa-0 text-break">{{ title }}</v-card-title>
 
-      <SparklineWeather
-          title="Temperature"
-          unit-of-measure="°C"
-          :value-selector="weather => weather.temperature"
-          :weather="weather"
-      />
+      <div :class="[{ 'list-vertically': listVertically }, 'layout']">
+        <SparklineWeather
+            title="Temperature"
+            unit-of-measure="°C"
+            :value-selector="weather => weather.temperature"
+            :weather="weather"
+        />
 
-      <SparklineWeather
-          title="Wind"
-          unit-of-measure="km/h"
-          :value-selector="weather => weather.windSpeed"
-          :weather="weather"
-      />
+        <SparklineWeather
+            title="Wind"
+            unit-of-measure="km/h"
+            :value-selector="weather => weather.windSpeed"
+            :weather="weather"
+        />
 
-      <SparklineWeather
-          title="Humidity"
-          unit-of-measure="%"
-          :value-selector="weather => weather.humidity"
-          :weather="weather"
-      />
+        <SparklineWeather
+            title="Humidity"
+            unit-of-measure="%"
+            :value-selector="weather => weather.humidity"
+            :weather="weather"
+        />
+      </div>
     </div>
 
   </div>
@@ -42,19 +44,31 @@ export default {
   components: {SparklineWeather},
   props: {
     title: String,
+
     weather: {
       type: Array,
       default: () => [],
     },
+
     loadingWeather: Boolean,
+
+    listVertically: Boolean,
   },
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'src/styles/media';
+
 .layout {
-  padding: var(--padding-card);
   display: grid;
   gap: var(--gap-tiles);
+}
+
+@media screen and ($media-above-tablets) {
+  // PageHistory needs to load this component in vertical format, regardless of screen size
+  .layout:not(.list-vertically) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 </style>

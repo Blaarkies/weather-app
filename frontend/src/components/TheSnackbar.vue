@@ -27,12 +27,15 @@ export default {
       this.color = color ?? 'primary';
       this.message = message;
     },
+
     postWarning({duration, message}) {
       this.post({duration, color: 'orange', message});
     },
+
     postError({duration, message}) {
       this.post({duration, color: 'error', message});
     },
+
     postInfo({duration, message}) {
       this.post({duration, color: 'primary', message});
     },

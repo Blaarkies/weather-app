@@ -1,6 +1,17 @@
 <template>
-  <div>
-    <v-card-title>Select a city to view its forecast</v-card-title>
+  <div class="layout">
+
+    <v-expand-x-transition mode="out">
+      <v-progress-linear
+          absolute
+          class="weather-loading"
+          v-show="loadingWeather"
+          reverse
+          indeterminate
+      />
+    </v-expand-x-transition>
+
+    <v-card-title class="forecast-title text-break">Select a city to view its forecast</v-card-title>
 
     <div class="selectors">
       <BaseSelectorCity
@@ -13,36 +24,51 @@
       />
     </div>
 
-    <div class="overlap-container">
-      <WeatherSummary
-          :weather="weather"
-          :loadingWeather="loadingWeather"
-          :city="city"
-      />
-
-      <v-expand-x-transition mode="out">
-        <v-progress-linear
-            class="weather-loading"
-            v-show="loadingWeather"
-            reverse
-            indeterminate
+    <v-expand-transition>
+      <v-card
+          v-show="weather.length"
+          height="auto"
+          width="auto"
+          class="current-weather-card"
+      >
+        <CurrentWeather
+            :weather="weather[0]"
+            :loadingWeather="loadingWeather"
+            :city="city"
         />
-      </v-expand-x-transition>
-    </div>
+      </v-card>
+    </v-expand-transition>
+
+    <v-expand-transition>
+      <v-card
+          v-show="weather.length"
+          height="auto"
+          width="auto"
+          class="timeline-weather-card"
+      >
+        <WeatherDataTimeline
+            title="Future Weather"
+            :weather="weather"
+            :loadingWeather="loadingWeather"
+        />
+      </v-card>
+    </v-expand-transition>
   </div>
 </template>
 
 <script>
 import BaseSelectorCity from "@/components/BaseSelectorCity";
-import WeatherSummary from "@/components/WeatherSummary";
 import {getForecast, getMessageFromError} from "@/helpers";
 import BaseInputZipCode from "@/components/BaseInputZipCode";
+import CurrentWeather from '@/components/CurrentWeather';
+import WeatherDataTimeline from '@/components/WeatherDataTimeline';
 
 export default {
   name: "PageWeatherForecasts",
   components: {
+    WeatherDataTimeline,
+    CurrentWeather,
     BaseInputZipCode,
-    WeatherSummary,
     BaseSelectorCity,
   },
   data: () => ({
@@ -74,7 +100,7 @@ export default {
           });
     },
 
-    async setWeatherByZipCode(zipCode) {
+    setWeatherByZipCode(zipCode) {
       this.loadingWeather = true;
 
       getForecast(null, zipCode)
@@ -101,13 +127,62 @@ export default {
 }
 </script>
 
-<style scoped>
-.weather-loading {
-  justify-self: center;
-}
+<style scoped lang="scss">
+@import 'src/styles/media';
 
 .selectors {
   display: flex;
   gap: var(--gap-content-section);
+}
+
+.layout {
+  display: grid;
+  grid-template-areas:
+    'title'
+    'selectors'
+    'loading'
+    'current'
+    'timeline';
+  gap: var(--gap-tiles);
+
+  .weather-loading {
+    justify-self: center;
+    grid-area: loading;
+  }
+
+  .forecast-title {
+    grid-area: title;
+  }
+
+  .selectors {
+    grid-area: selectors;
+  }
+
+  .current-weather-card {
+    grid-area: current;
+    padding: var(--padding-card);
+  }
+
+  .timeline-weather-card {
+    grid-area: timeline;
+    padding: var(--padding-card);
+  }
+}
+
+@media screen and ($media-above-tablets) {
+  .layout {
+    max-width: 1200px;
+    grid-template-areas:
+      'loading   loading'
+      'title     current'
+      'selectors current'
+      'timeline  timeline';
+    grid-template-columns: minmax(160px, auto) minmax(200px, auto);
+    grid-template-rows: max-content max-content 1fr max-content;
+
+    .current-weather-card {
+      align-self: start;
+    }
+  }
 }
 </style>

@@ -2,6 +2,8 @@
   <div class="confirmer-container">
     <v-tooltip
         left
+        :nudge-left="shouldClickAgain ? 10 : -50"
+        nudge-bottom="35"
         :color="shouldClickAgain ? 'error' : ''"
         :key="tooltipKey"
     >
@@ -23,6 +25,7 @@
           <v-btn
               @click="tryToConfirm()"
               icon
+              :disabled="!hasDataInCache"
           >
             <v-icon>mdi-database-remove-outline</v-icon>
           </v-btn>
@@ -49,6 +52,11 @@ export default {
     snackBarColor: null,
     snackBarMessage: null,
   }),
+  computed: {
+    hasDataInCache() {
+      return this.$store.getters.citiesAndWeeksOfData.length > 0;
+    },
+  },
   methods: {
     tryToConfirm() {
       if (!this.waitValue) {
@@ -66,7 +74,6 @@ export default {
             .subscribe(i => this.waitValue = i);
       } else {
         if (this.waitValue >= 0) {
-          this.shouldClickAgain = null;
           this.unsubscribe$.next();
           this.clearCachedStorage();
         }
