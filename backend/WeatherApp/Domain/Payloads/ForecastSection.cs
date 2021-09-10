@@ -1,6 +1,6 @@
 ﻿using System;
-using ExtensionMethods;
 using WeatherApp.Domain.OpenWeather;
+using WeatherApp.Extensions;
 
 namespace WeatherApp.Controllers
 {

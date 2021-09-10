@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="Assets\german-cities.json" />
       <EmbeddedResource Include="Assets\german-cities.json" />
     </ItemGroup>
 

@@ -44,7 +44,7 @@ namespace WeatherApp
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "WeatherApp", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrystalWeatherApp", Version = "v1" });
             });
 
             services.AddCors(options =>
@@ -59,7 +59,7 @@ namespace WeatherApp
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new {id = RouteParameter.Optional}
+                defaults: new { id = RouteParameter.Optional }
             );
         }
 
@@ -70,7 +70,7 @@ namespace WeatherApp
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeatherApp v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CrystalWeatherApp v1"));
             }
 
             app.UseHttpsRedirection();

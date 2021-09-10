@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ExtensionMethods;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WeatherApp.Domain;
+using WeatherApp.Extensions;
 
 namespace WeatherApp.Services.GeoData
 {

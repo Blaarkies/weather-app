@@ -1,11 +1,16 @@
 ﻿using System;
 
-namespace ExtensionMethods
+namespace WeatherApp.Extensions
 {
-    public static class Extensions
+    public static class ExtensionMethods
     {
-        public static bool Like(this String baseString, String query)
+        public static bool Like(this string baseString, string query)
         {
+            if (string.IsNullOrEmpty(baseString) || string.IsNullOrEmpty(query))
+            {
+                return false;
+            }
+
             var safeBaseString = baseString.Trim().ToLower();
             var safeQuery = query.Trim().ToLower();
             return safeBaseString.Contains(safeQuery);
@@ -28,6 +33,5 @@ namespace ExtensionMethods
         {
             return baseValue * 3.6m;
         }
-
     }
 }
