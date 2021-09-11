@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,6 +16,9 @@ using WeatherApp.Services.JsonJsonFileReader;
 
 namespace WeatherApp.Services.GeoData
 {
+    /// <summary>
+    /// Provides geographical information about cities in germany.
+    /// </summary>
     public class GeoDataService : IGeoDataService
     {
         private readonly ILogger<GeoDataService> _logger;
@@ -43,17 +47,23 @@ namespace WeatherApp.Services.GeoData
             _jsonFileReaderService = jsonFileReaderService;
         }
 
+        /// <summary>
+        /// Logs information relevant to the service's behaviour.
+        /// </summary>
         private void WriteMessage(string message, string stack)
         {
             _logger.LogInformation($"GeoDataService {message} \n {stack}");
         }
 
-        private async Task SetupListOfCityNames()
+        /// <summary>
+        /// Attempts to populate the API with a list of city names, for quick responses to frontend request.
+        /// </summary>
+        private async Task SetupListOfCityNames(CancellationToken cancellationToken)
         {
             IEnumerable<string> wikiList = null;
             try
             {
-                wikiList = await GetWikiGermanCityNames();
+                wikiList = await GetWikiGermanCityNames(cancellationToken);
             }
             catch (Exception e)
             {
@@ -72,6 +82,10 @@ namespace WeatherApp.Services.GeoData
             _germanCityNames = await GetFallbackGermanCityNames();
         }
 
+        /// <summary>
+        /// Returns a list of city names from a JSON file. This is used a fallback if other methods of city name
+        /// retrievals failed.
+        /// </summary>
         private async Task<IEnumerable<string>> GetFallbackGermanCityNames()
         {
             var json = await _jsonFileReaderService.Read("Assets/german-cities.json");
@@ -79,29 +93,37 @@ namespace WeatherApp.Services.GeoData
             return items;
         }
 
-        private async Task<IEnumerable<string>> GetWikiGermanCityNames()
+        /// <summary>
+        /// Queries the Wikimedia API and attempts to retrieve the list of Towns/Cities in Germany.
+        /// </summary>
+        private async Task<IEnumerable<string>> GetWikiGermanCityNames(CancellationToken cancellationToken)
         {
-            // https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Germany
             var wikiApi = "https://en.wikipedia.org/w/api.php";
             _client.BaseAddress = new Uri($"{wikiApi}/");
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
+            // The request will try to find this page
+            // https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Germany
             var response = await _client.GetAsync(
-                "?action=query&format=json&prop=revisions&titles=List%20of%20cities%20and%20towns%20in%20Germany&rvslots=*&rvprop=content&formatversion=2");
+                "?action=query&format=json&prop=revisions&titles=List%20of%20cities%20and%20towns%20in%20Germany&rvslots=*&rvprop=content&formatversion=2",
+                cancellationToken);
 
-            var jsonPayload = await response.Content.ReadAsStringAsync();
+            var jsonPayload = await response.Content.ReadAsStringAsync(cancellationToken);
 
             var content = JObject.Parse(jsonPayload)["query"]["pages"][0]["revisions"][0]["slots"]["main"]["content"]
                 .ToString();
 
+            // The content is not in a simple format to parse. This pulls city names from the list, and cleans up names
+            // from any special characters.
             var cities = content.Split("\n")
-                .SkipWhile(l => l != "==A==")
-                .Where(l => l.Contains("* [["))
+                .SkipWhile(l => l != "==A==") // skip the lines above the first "A" heading (those are aggregations)
+                .Where(l => l.Contains("* [[")) // filter anything that is not possible a city name line
+                // regex that selects a name up to and stopping at any special characters " ,|]( "
                 .Select(l => Regex.Matches(l, @"\b[^,\|\]\(\/]+[,\|\]\(]+", RegexOptions.IgnoreCase)[0].Value)
                 .Select(text => text
-                    .Replace("]", "")
+                    .Replace("]", "") // remove leftover special characters
                     .Replace(",", "")
                     .Replace(".", "")
                     .Replace("_", "")
@@ -110,26 +132,31 @@ namespace WeatherApp.Services.GeoData
             return cities;
         }
 
-        private async Task<IEnumerable<string>> GetGermanCityNames()
+        /// <summary>
+        /// Gets german city names, and handles first call setup of the names list.
+        /// </summary>
+        private async Task<IEnumerable<string>> GetGermanCityNames(CancellationToken cancellationToken)
         {
             if (_germanCityNames == null)
             {
-                await SetupListOfCityNames();
+                await SetupListOfCityNames(cancellationToken);
             }
 
             return await Task.FromResult(_germanCityNames);
         }
 
-        public async Task<IEnumerable<string>> QueryCitiesForName(string search)
+        /// <inheritdoc/>
+        public async Task<IEnumerable<string>> QueryCitiesForName(string search, CancellationToken cancellationToken)
         {
-            var cities = await GetGermanCityNames();
+            var cities = await GetGermanCityNames(cancellationToken);
             return cities.Where(name => name.Like(search))
                 .Take(_settings.PageSize);
         }
 
-        public async Task<IEnumerable<string>> GetAllCities()
+        /// <inheritdoc/>
+        public async Task<IEnumerable<string>> GetAllCities(CancellationToken cancellationToken)
         {
-            var cities = await GetGermanCityNames();
+            var cities = await GetGermanCityNames(cancellationToken);
             return cities.Take(_settings.PageSize);
         }
     }

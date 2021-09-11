@@ -2,6 +2,9 @@
 
 namespace WeatherApp.Domain.OpenWeather
 {
+    /// <summary>
+    /// Typical response from OpenWeatherApi, specifically for the 5 day forecast request
+    /// </summary>
     public class OpenWeatherResponse
     {
         [JsonProperty("cod")]
@@ -16,6 +19,9 @@ namespace WeatherApp.Domain.OpenWeather
         public OpenWeatherCity City;
     }
 
+    /// <summary>
+    /// Forecast section of the response from OpenWeatherApi.
+    /// </summary>
     public class OpenWeatherForecast
     {
         [JsonProperty("dt")]
@@ -36,6 +42,9 @@ namespace WeatherApp.Domain.OpenWeather
         public decimal Pop;
     }
 
+    /// <summary>
+    /// Wind section of the response from OpenWeatherApi.
+    /// </summary>
     public class OpenWeatherSpecificWind
     {
         [JsonProperty("speed")]
@@ -46,12 +55,18 @@ namespace WeatherApp.Domain.OpenWeather
         public decimal Gust;
     }
 
+    /// <summary>
+    /// Clouds section of the response from OpenWeatherApi.
+    /// </summary>
     public class OpenWeatherSpecificCloud
     {
         [JsonProperty("all")]
         public string All;
     }
 
+    /// <summary>
+    /// Summary section of the response from OpenWeatherApi.
+    /// </summary>
     public class OpenWeatherWeatherSummary
     {
         [JsonProperty("id")]
@@ -64,6 +79,10 @@ namespace WeatherApp.Domain.OpenWeather
         public string Icon;
     }
 
+    /// <summary>
+    /// Details section of the response from OpenWeatherApi, these can be used as data points to graph weather over
+    /// time.
+    /// </summary>
     public class OpenWeatherMainDetails
     {
         [JsonProperty("temp")]
@@ -86,6 +105,9 @@ namespace WeatherApp.Domain.OpenWeather
         public decimal Temp_kf;
     }
 
+    /// <summary>
+    /// City section of the response from OpenWeatherApi.
+    /// </summary>
     public class OpenWeatherCity
     {
         [JsonProperty("id")]
@@ -106,6 +128,9 @@ namespace WeatherApp.Domain.OpenWeather
         public int Sunset;
     }
 
+    /// <summary>
+    /// Coordinates section of the response from OpenWeatherApi.
+    /// </summary>
     public class OpenWeatherCoordinates
     {
         [JsonProperty("lat")]

@@ -3,6 +3,9 @@ using WeatherApp.Domain.OpenWeather;
 
 namespace WeatherApp.Domain.Payloads
 {
+    /// <summary>
+    /// Frontend payload with details about the specific city that weather has been forecasted for.
+    /// </summary>
     public class CitySection
     {
         public decimal Latitude;

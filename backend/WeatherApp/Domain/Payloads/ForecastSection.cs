@@ -4,6 +4,9 @@ using WeatherApp.Extensions;
 
 namespace WeatherApp.Domain.Payloads
 {
+    /// <summary>
+    /// Frontend payload with information used to display the weather forecast for a 3 hour period.
+    /// </summary>
     public class ForecastSection
     {
         public DateTime DateTime;

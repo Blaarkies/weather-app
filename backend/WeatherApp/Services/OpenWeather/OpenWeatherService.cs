@@ -12,6 +12,7 @@ using WeatherApp.Domain.OpenWeather;
 
 namespace WeatherApp.Services.OpenWeather
 {
+    /// <inheritdoc/>
     public class OpenWeatherService : IOpenWeatherService
     {
         private readonly ILogger<OpenWeatherService> _logger;
@@ -33,11 +34,16 @@ namespace WeatherApp.Services.OpenWeather
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// Logs information relevant to the service's behaviour.
+        /// </summary>
         private void WriteMessage(string message, string stack = null)
         {
             _logger.LogInformation($"OpenWeatherService: {message} \n {stack}");
         }
 
+        /// <inheritdoc/>
+        /// <exception cref="ArgumentException">When OpenWeatherApi responds with a fail status code</exception>
         public async Task<OpenWeatherResponse> Get5DayForecast(
             string city,
             string zipCode,

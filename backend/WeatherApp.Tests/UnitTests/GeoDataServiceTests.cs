@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -50,7 +51,7 @@ namespace WeatherApp.Tests.UnitTests
             var service = CreateService();
             var shouldExist = maximumCount > 0;
 
-            var results = await service.QueryCitiesForName(search);
+            var results = await service.QueryCitiesForName(search, CancellationToken.None);
             var resultsList = results.ToList();
 
             Assert.GreaterOrEqual(resultsList.Count, minimumCount);
@@ -66,7 +67,7 @@ namespace WeatherApp.Tests.UnitTests
         {
             var service = CreateService();
 
-            var results = await service.GetAllCities();
+            var results = await service.GetAllCities(CancellationToken.None);
             var resultsList = results.ToList();
             var areAllCitiesInList = resultsList.All(c => CityNamesJson.Contains(c));
 

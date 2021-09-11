@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.Services.JsonJsonFileReader
 {
+    /// <inheritdoc/>
     public class JsonFileReaderService : IJsonFileReaderService
     {
+        /// <inheritdoc/>
         public async Task<string> Read(string path)
         {
             using var reader = new StreamReader(path);
