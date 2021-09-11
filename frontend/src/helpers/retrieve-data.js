@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = `https://localhost:5001/api/`;
+const apiUrl = process.env.VUE_APP_BASE_URL;
 
 export async function getForecast(city, zipCode) {
     const response = await axios.get(`${apiUrl}Weather/forecast`,

@@ -4,6 +4,7 @@
       :loading="loading"
       :items="items"
       :search-input.sync="search"
+      @keydown.enter="select = search"
       cache-items
       flat
       label="City"
