@@ -1,7 +1,7 @@
 ﻿using System;
 using WeatherApp.Domain.OpenWeather;
 
-namespace WeatherApp.Controllers
+namespace WeatherApp.Domain.Payloads
 {
     public class CitySection
     {

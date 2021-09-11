@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -37,7 +36,7 @@ namespace WeatherApp.Controllers
         [HttpGet("cities")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var cities = await _geoDataService.AllCities();
+            var cities = await _geoDataService.GetAllCities();
             return new OkObjectResult(_serializerService.Serialize(cities));
         }
     }

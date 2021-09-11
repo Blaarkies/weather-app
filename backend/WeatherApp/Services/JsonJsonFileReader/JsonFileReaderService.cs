@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using WeatherApp.Domain;
 
 namespace WeatherApp.Services.JsonJsonFileReader
 {

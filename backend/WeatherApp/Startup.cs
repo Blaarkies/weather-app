@@ -25,16 +25,16 @@ namespace WeatherApp
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ISettingsService>(new SettingsService(Configuration));
             services.AddSingleton<IJsonFileReaderService>(new JsonFileReaderService());
-            services.AddSingleton(new OpenWeatherSettings(Configuration));
+            services.AddSingleton<IOpenWeatherSettings>(new OpenWeatherSettings(Configuration));
             services.AddSingleton<IOpenWeatherService, OpenWeatherService>();
             services.AddSingleton<IGeoDataService, GeoDataService>();
             services.AddSingleton<ISerializerService, SerializerService>();
-            services.AddSingleton<HttpClient>();
+
+            services.AddTransient<HttpClient>();
 
             services.AddControllers()
                 .AddJsonOptions(options =>
@@ -71,7 +71,6 @@ namespace WeatherApp
             );
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

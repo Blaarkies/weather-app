@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WeatherApp.Domain;
 using WeatherApp.Extensions;
 using WeatherApp.Services.JsonJsonFileReader;
 using WeatherApp.Services.Settings;
@@ -126,7 +125,7 @@ namespace WeatherApp.Services.GeoData
                 .Take(_settingsService.PageSize);
         }
 
-        public async Task<IEnumerable<string>> AllCities()
+        public async Task<IEnumerable<string>> GetAllCities()
         {
             var cities = await GetGermanCityNames();
             return cities.Take(_settingsService.PageSize);

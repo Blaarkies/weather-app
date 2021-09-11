@@ -5,11 +5,6 @@ namespace WeatherApp.Tests.UnitTests
 {
     public class ExtensionMethodsTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [TestCase("abc", "a")]
         [TestCase("abc", "b")]
         [TestCase("abc", "c")]
@@ -39,7 +34,7 @@ namespace WeatherApp.Tests.UnitTests
         [TestCase(373.15, 100)]
         public void KelvinToCelsius_KelvinValue_ReturnsInCelsius(decimal kelvin, decimal celsius)
         {
-            Assert.AreEqual(kelvin.KelvinToCelsius(), celsius);
+            Assert.AreEqual(celsius, kelvin.KelvinToCelsius());
         }
 
         [TestCase(360, "N")]
@@ -61,7 +56,7 @@ namespace WeatherApp.Tests.UnitTests
         [TestCase(337.5, "NNW")]
         public void DegreesToCardinal_DegreesDirection_ReturnsInCompassWording(decimal direction, string compass)
         {
-            Assert.AreEqual(direction.DegreesToCardinal(), compass);
+            Assert.AreEqual(compass, direction.DegreesToCardinal());
         }
 
         [TestCase(0, 0)]
@@ -69,7 +64,7 @@ namespace WeatherApp.Tests.UnitTests
         [TestCase(7660, 27_576)] // orbital velocity of ISS
         public void MpsToKmph_MetersPerSecond_ReturnsInKilometerPerHour(decimal mps, decimal kmph)
         {
-            Assert.AreEqual(mps.MpsToKmph(), kmph);
+            Assert.AreEqual(kmph, mps.MpsToKmph());
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WeatherApp.Services.Serializer
+﻿namespace WeatherApp.Services.Serializer
 {
     public interface ISerializerService
     {

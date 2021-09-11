@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WeatherApp.Domain.Payloads;
 using WeatherApp.Services.OpenWeather;
 using WeatherApp.Services.Serializer;
 

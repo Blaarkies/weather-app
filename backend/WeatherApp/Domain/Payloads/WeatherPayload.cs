@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WeatherApp.Controllers;
 using WeatherApp.Domain.OpenWeather;
 
-namespace WeatherApp.Controllers
+namespace WeatherApp.Domain.Payloads
 {
     public class WeatherPayload
     {

@@ -2,7 +2,7 @@
 using WeatherApp.Domain.OpenWeather;
 using WeatherApp.Extensions;
 
-namespace WeatherApp.Controllers
+namespace WeatherApp.Domain.Payloads
 {
     public class ForecastSection
     {

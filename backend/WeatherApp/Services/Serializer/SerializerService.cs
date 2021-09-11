@@ -5,7 +5,7 @@ namespace WeatherApp.Services.Serializer
 {
     public class SerializerService : ISerializerService
     {
-        private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
+        private readonly JsonSerializerSettings _settings = new()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };

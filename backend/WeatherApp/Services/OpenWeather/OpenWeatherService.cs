@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WeatherApp.Domain;
 using WeatherApp.Domain.OpenWeather;
@@ -19,12 +15,12 @@ namespace WeatherApp.Services.OpenWeather
     {
         private readonly ILogger<OpenWeatherService> _logger;
         private readonly HttpClient _client;
-        private readonly OpenWeatherSettings _openWeatherSettings;
+        private readonly IOpenWeatherSettings _openWeatherSettings;
 
         public OpenWeatherService(
             ILogger<OpenWeatherService> logger,
             HttpClient client,
-            OpenWeatherSettings openWeatherSettings)
+            IOpenWeatherSettings openWeatherSettings)
         {
             _logger = logger;
             _client = client;
@@ -73,13 +69,5 @@ namespace WeatherApp.Services.OpenWeather
 
             return result;
         }
-    }
-
-    public class OpenWeatherMessage
-    {
-        [JsonProperty("cod")]
-        public string Cod;
-        [JsonProperty("message")]
-        public int Message;
     }
 }

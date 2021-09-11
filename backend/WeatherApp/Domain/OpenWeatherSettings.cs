@@ -2,10 +2,10 @@
 
 namespace WeatherApp.Domain
 {
-    public class OpenWeatherSettings
+    public class OpenWeatherSettings : IOpenWeatherSettings
     {
-        public readonly string ServiceApiKey;
-        public readonly string Url;
+        public string ServiceApiKey { get; }
+        public string Url { get; }
 
         public OpenWeatherSettings(IConfiguration configuration)
         {
