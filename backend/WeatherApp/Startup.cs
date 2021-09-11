@@ -12,7 +12,6 @@ using WeatherApp.Services.GeoData;
 using WeatherApp.Services.JsonJsonFileReader;
 using WeatherApp.Services.OpenWeather;
 using WeatherApp.Services.Serializer;
-using WeatherApp.Services.Settings;
 
 namespace WeatherApp
 {
@@ -27,9 +26,10 @@ namespace WeatherApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ISettingsService>(new SettingsService(Configuration));
-            services.AddSingleton<IJsonFileReaderService>(new JsonFileReaderService());
-            services.AddSingleton<IOpenWeatherSettings>(new OpenWeatherSettings(Configuration));
+            services.Configure<Settings>(Configuration.GetSection("Settings"));
+            services.Configure<OpenWeatherSettings>(Configuration.GetSection("OpenWeather"));
+
+            services.AddSingleton<IJsonFileReaderService, JsonFileReaderService>();
             services.AddSingleton<IOpenWeatherService, OpenWeatherService>();
             services.AddSingleton<IGeoDataService, GeoDataService>();
             services.AddSingleton<ISerializerService, SerializerService>();
@@ -56,8 +56,10 @@ namespace WeatherApp
                     {
                         builder
                             .WithMethods("GET")
-                            .AllowAnyOrigin();
-                        // WithOrigins("http://localhost:8080", "http://192.168.1.179:8080")
+                            .WithOrigins(
+                                "http://localhost:8080",
+                                "http://192.168.1.179:8080",
+                                "https://crystal-weather.blaarkies.com");
                     });
             });
 

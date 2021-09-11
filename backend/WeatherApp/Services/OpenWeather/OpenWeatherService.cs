@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using WeatherApp.Domain;
 using WeatherApp.Domain.OpenWeather;
@@ -15,26 +16,26 @@ namespace WeatherApp.Services.OpenWeather
     {
         private readonly ILogger<OpenWeatherService> _logger;
         private readonly HttpClient _client;
-        private readonly IOpenWeatherSettings _openWeatherSettings;
+        private readonly OpenWeatherSettings _openWeatherSettings;
 
         public OpenWeatherService(
             ILogger<OpenWeatherService> logger,
             HttpClient client,
-            IOpenWeatherSettings openWeatherSettings)
+            IOptions<OpenWeatherSettings> openWeatherSettings)
         {
             _logger = logger;
             _client = client;
-            _openWeatherSettings = openWeatherSettings;
+            _openWeatherSettings = openWeatherSettings.Value;
 
-            client.BaseAddress = new Uri($"{openWeatherSettings.Url}/");
+            client.BaseAddress = new Uri($"{_openWeatherSettings.Url}/");
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void WriteMessage(string message)
+        private void WriteMessage(string message, string stack = null)
         {
-            _logger.LogInformation($"MyDependency2.WriteMessage Message: {message}");
+            _logger.LogInformation($"OpenWeatherService: {message} \n {stack}");
         }
 
         public async Task<OpenWeatherResponse> Get5DayForecast(
@@ -61,6 +62,8 @@ namespace WeatherApp.Services.OpenWeather
             {
                 var jsonPayload = await response.Content.ReadAsStringAsync(cancellationToken);
                 var errorMessage = JObject.Parse(jsonPayload)["message"].ToString();
+
+                WriteMessage($"Could not get forecast for city:[{city}] zipcode:[{zipCode}]. " + errorMessage);
 
                 throw new ArgumentException(errorMessage);
             }

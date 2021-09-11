@@ -1,14 +1,14 @@
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using RichardSzalay.MockHttp;
+using WeatherApp.Domain;
 using WeatherApp.Services.GeoData;
 using WeatherApp.Services.JsonJsonFileReader;
-using WeatherApp.Services.Settings;
 
 namespace WeatherApp.Tests.UnitTests
 {
@@ -20,15 +20,10 @@ namespace WeatherApp.Tests.UnitTests
         {
             var mockLogger = Mock.Of<ILogger<GeoDataService>>();
 
-            var mockSettings = Mock.Of<ISettingsService>();
-            Mock.Get(mockSettings)
-                .Setup(m => m.PageSize)
-                .Returns(20);
+            var mockSettings = Options.Create(new Settings{PageSize = 20});
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp
-                .When("*")
-                .Respond("application/json", "{'test-error' : 'no-content'}");
+            mockHttp.When("*").Respond("application/json", "{'test-error' : 'no-content'}");
             var mockHttpClient = new HttpClient(mockHttp);
 
             var mockJsonFileReaderService = Mock.Of<IJsonFileReaderService>();

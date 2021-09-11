@@ -1,6 +1,8 @@
 # Crystal Weather
 
-### An app to view weather forecasts in any German city.
+[Demo](https://crystal-weather.blaarkies.com)
+
+### An app to view weather forecasts in any german city.
 
 Users can view the current weather forecast for a specific city by selecting that city by name or by zip code.
 

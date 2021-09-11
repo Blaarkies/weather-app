@@ -29,7 +29,7 @@ export default {
     },
 
     postWarning({duration, message}) {
-      this.post({duration, color: 'orange', message});
+      this.post({duration, color: 'orange darken-2', message});
     },
 
     postError({duration, message}) {

@@ -1,16 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace WeatherApp.Domain
+﻿namespace WeatherApp.Domain
 {
-    public class OpenWeatherSettings : IOpenWeatherSettings
+    public class OpenWeatherSettings
     {
-        public string ServiceApiKey { get; }
-        public string Url { get; }
-
-        public OpenWeatherSettings(IConfiguration configuration)
-        {
-            ServiceApiKey = configuration["OpenWeather:ServiceApiKey"];
-            Url = configuration["OpenWeather:Url"];
-        }
+        public string ServiceApiKey { get; set; }
+        public string Url { get; set; }
     }
 }

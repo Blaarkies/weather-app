@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using RichardSzalay.MockHttp;
@@ -29,13 +30,11 @@ namespace WeatherApp.Tests.UnitTests
         {
             var mockLogger = Mock.Of<ILogger<OpenWeatherService>>();
 
-            var mockOpenWeatherSettings = Mock.Of<IOpenWeatherSettings>();
-            Mock.Get(mockOpenWeatherSettings)
-                .Setup(m => m.Url)
-                .Returns("https://a.a.org");
-            Mock.Get(mockOpenWeatherSettings)
-                .Setup(m => m.ServiceApiKey)
-                .Returns("apikey");
+            var mockOpenWeatherSettings = Options.Create(new OpenWeatherSettings
+            {
+                Url = "https://a.a.org",
+                ServiceApiKey = "apikey",
+            });
 
             return new OpenWeatherService(
                 mockLogger,

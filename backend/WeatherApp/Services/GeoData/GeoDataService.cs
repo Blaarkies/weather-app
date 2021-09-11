@@ -6,18 +6,19 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using WeatherApp.Domain;
 using WeatherApp.Extensions;
 using WeatherApp.Services.JsonJsonFileReader;
-using WeatherApp.Services.Settings;
 
 namespace WeatherApp.Services.GeoData
 {
     public class GeoDataService : IGeoDataService
     {
         private readonly ILogger<GeoDataService> _logger;
-        private readonly ISettingsService _settingsService;
+        private readonly Settings _settings;
         private readonly HttpClient _client;
         private readonly IJsonFileReaderService _jsonFileReaderService;
         private IEnumerable<string> _germanCityNames;
@@ -32,19 +33,19 @@ namespace WeatherApp.Services.GeoData
 
         public GeoDataService(
             ILogger<GeoDataService> logger,
-            ISettingsService settingsService,
+            IOptions<Settings> settingsService,
             HttpClient client,
             IJsonFileReaderService jsonFileReaderService)
         {
             _logger = logger;
-            _settingsService = settingsService;
+            _settings = settingsService.Value;
             _client = client;
             _jsonFileReaderService = jsonFileReaderService;
         }
 
-        public void WriteMessage(string message)
+        private void WriteMessage(string message, string stack)
         {
-            _logger.LogInformation($"MyDependency2.WriteMessage Message: {message}");
+            _logger.LogInformation($"GeoDataService {message} \n {stack}");
         }
 
         private async Task SetupListOfCityNames()
@@ -56,7 +57,8 @@ namespace WeatherApp.Services.GeoData
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                WriteMessage("Could not find Wikipedia list of german cities, falling back to local json list. "
+                             + e.Message, e.StackTrace);
             }
 
             // test if the wiki list was parsed correctly
@@ -122,13 +124,13 @@ namespace WeatherApp.Services.GeoData
         {
             var cities = await GetGermanCityNames();
             return cities.Where(name => name.Like(search))
-                .Take(_settingsService.PageSize);
+                .Take(_settings.PageSize);
         }
 
         public async Task<IEnumerable<string>> GetAllCities()
         {
             var cities = await GetGermanCityNames();
-            return cities.Take(_settingsService.PageSize);
+            return cities.Take(_settings.PageSize);
         }
     }
 }
