@@ -48,16 +48,28 @@
 <script>
 import {formatDateToHourMinute} from "@/helpers";
 
+/**
+ * Weather card showing the current weather details for the specified city.
+ */
 export default {
   name: 'CurrentWeather',
   props: {
+    /**
+     * Main weather object containing data to be displayed.
+     */
     weather: {
       type: Object,
       default: () => ({}),
     },
 
+    /**
+     * Used to show loading skeleton loaders.
+     */
     loadingWeather: Boolean,
 
+    /**
+     * City information.
+     */
     city: {
       type: Object,
       default: () => ({}),
@@ -65,14 +77,29 @@ export default {
   },
 
   methods: {
+    /**
+     * Formats temperature to integer display.
+     * @param value decimal number
+     * @returns {string|*|string}
+     */
     formatTemperature(value) {
       return value?.toFixed(0);
     },
 
+    /**
+     * Formats wind speed to integer display.
+     * @param value decimal number
+     * @returns {string|*|string}
+     */
     formatWindSpeed(value) {
       return value?.toFixed(0);
     },
 
+    /**
+     * Formats time to an hour:minutes display, or an empty string if invalid.
+     * @param value date time string
+     * @returns {*|string}
+     */
     formatTime(value) {
       return value
           ? formatDateToHourMinute(new Date(value))

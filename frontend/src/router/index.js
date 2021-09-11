@@ -20,12 +20,12 @@ const routes = [
     },
     {
         path: '*',
-        component: () => '<div>404 Not Found</div>',
+        component: () => '<h1>404 Not Found</h1>',
     },
 ];
 
 const router = new VueRouter({
-    routes
+    routes,
 });
 
 export default router;

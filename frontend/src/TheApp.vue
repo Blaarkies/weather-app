@@ -52,6 +52,10 @@ export default {
   name: 'TheApp',
   components: {TheSnackbar, ButtonClearCachedStorage},
   computed: {
+    /**
+     * Toolbar title, matches the name property from current route.
+     * @returns {string}
+     */
     title() {
       return this.$route.name;
     },
@@ -70,7 +74,6 @@ export default {
   --gap-tiles: 10px;
   --gap-content-section: 20px;
   --gap-table-column: 20px;
-  --color-warn: #dc3545;
 }
 
 .content-layout {
@@ -79,6 +82,8 @@ export default {
   height: 100%;
 }
 
+// class to allow layering elements on top of each other,
+// while allowing easy positioning for each element
 .overlap-container {
   display: grid;
 
@@ -110,6 +115,7 @@ export default {
   }
 }
 
+// extra large icon used for empty-state pages
 .icon-pictogram {
   font-size: 100px !important;
   width: 100%;

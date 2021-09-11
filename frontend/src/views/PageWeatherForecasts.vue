@@ -16,7 +16,7 @@
     <div class="selectors">
       <BaseSelectorCity
           :key="'city'+citySelectorKey"
-          @select="setWeatherByCity($event)"
+          @select="setWeatherByCityName($event)"
       />
       <BaseInputZipCode
           :key="'zip'+zipCodeSelectorKey"
@@ -63,6 +63,10 @@ import BaseInputZipCode from "@/components/BaseInputZipCode";
 import CurrentWeather from '@/components/CurrentWeather';
 import WeatherDataTimeline from '@/components/WeatherDataTimeline';
 
+/**
+ * A page displaying the weather forecast for a selected city or zip code. Forecast is displayed in a current weather
+ * card, and a 5-day future forecast is shown in data graph format.
+ */
 export default {
   name: "PageWeatherForecasts",
   components: {
@@ -79,11 +83,22 @@ export default {
     zipCodeSelectorKey: 0,
   }),
   methods: {
+    /**
+     * Provides an error message to the user generated from an API error object. Typical errors include
+     * "City not found", "Network error", etc.
+     * @param error
+     */
     setSnackBarMessage(error) {
       this.$root.snackbar.postError({message: getMessageFromError(error)})
     },
 
-    async setWeatherByCity(cityName) {
+    /**
+     * Sets the weather forecast by city name. If errors are encountered, it resets the weather display,
+     * and clears the city name input. On success, it clears the zip code input.
+     * @param cityName
+     * @returns {Promise<void>}
+     */
+    async setWeatherByCityName(cityName) {
       this.loadingWeather = true;
 
       getForecast(cityName)
@@ -100,13 +115,20 @@ export default {
           });
     },
 
-    setWeatherByZipCode(zipCode) {
+    /**
+     * Sets the weather forecast by zip code. If errors are encountered, it resets the weather display,
+     * and clears the zip code input. On success, it clears the city name input.
+     * @param cityName
+     * @returns {Promise<void>}
+     */
+    async setWeatherByZipCode(zipCode) {
       this.loadingWeather = true;
 
       getForecast(null, zipCode)
           .then(({city, weatherList}) => this.setWeather(city, weatherList))
           .catch(error => {
             this.setSnackBarMessage(error);
+            this.zipCodeSelectorKey++;
             this.weather = [];
             this.city = {};
           })
@@ -116,6 +138,11 @@ export default {
           });
     },
 
+    /**
+     * Set data to new weather data, and save the new data into the store.
+     * @param city
+     * @param weatherList
+     */
     setWeather(city, weatherList) {
       this.city = city;
       this.weather = weatherList;

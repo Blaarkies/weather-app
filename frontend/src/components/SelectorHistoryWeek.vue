@@ -28,9 +28,15 @@
 </template>
 
 <script>
+/**
+ * List of city names with nested accordion style contents, showing the available weeks of data for each city..
+ */
 export default {
   name: "SelectorHistoryWeek",
   props: {
+    /**
+     * List of cities and their nested weeks of weather data.
+     */
     cities: {
       type: Array,
       default: () => [],
@@ -39,6 +45,11 @@ export default {
   emits: {select: Object},
 
   methods: {
+    /**
+     * Sends emit events of 'select' with current selection.
+     * @param name city name
+     * @param dt date time of week
+     */
     selectCityAtDate(name, dt) {
       this.$emit('select', {name, dt});
     },

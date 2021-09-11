@@ -13,21 +13,21 @@
         <SparklineWeather
             title="Temperature"
             unit-of-measure="°C"
-            :value-selector="weather => weather.temperature"
+            :value-selector="dataPoint => dataPoint.temperature"
             :weather="weather"
         />
 
         <SparklineWeather
             title="Wind"
             unit-of-measure="km/h"
-            :value-selector="weather => weather.windSpeed"
+            :value-selector="dataPoint => dataPoint.windSpeed"
             :weather="weather"
         />
 
         <SparklineWeather
             title="Humidity"
             unit-of-measure="%"
-            :value-selector="weather => weather.humidity"
+            :value-selector="dataPoint => dataPoint.humidity"
             :weather="weather"
         />
       </div>
@@ -39,19 +39,34 @@
 <script>
 import SparklineWeather from "@/components/SparklineWeather";
 
+/**
+ * A card displaying the temperature, wind speed, and humidity data in graphs for a period of weather data points.
+ */
 export default {
   name: "WeatherDataTimeline",
   components: {SparklineWeather},
   props: {
+    /**
+     * Title of weather card.
+     */
     title: String,
 
+    /**
+     * List of weather data to be displayed in graphs.
+     */
     weather: {
       type: Array,
       default: () => [],
     },
 
+    /**
+     * Used by skeleton loader to show loading status.
+     */
     loadingWeather: Boolean,
 
+    /**
+     * Sets the graphs to be stacked vertically, regardless of screen size/orientation.
+     */
     listVertically: Boolean,
   },
 }

@@ -17,13 +17,16 @@ export const store = new Vuex.Store({
 
 export const storeStorageKey = 'crystal-weather-app-store';
 
-persistStoreToLocalStorage();
+syncLocalStorageToStore();
 
-function persistStoreToLocalStorage() {
-    store.subscribe((mutation, state) =>
-        localStorage.setItem(storeStorageKey, JSON.stringify(state)));
-
+/**
+ * Loads local storage store into app store, and sets up local storage updates on each store mutations.
+ */
+function syncLocalStorageToStore() {
     store.dispatch('loadStoreFromCache', {
         cachedStore: localStorage.getItem(storeStorageKey)
     });
+
+    store.subscribe((mutation, state) =>
+        localStorage.setItem(storeStorageKey, JSON.stringify(state)));
 }

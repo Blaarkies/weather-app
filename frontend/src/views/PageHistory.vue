@@ -54,6 +54,9 @@ import SelectorHistoryWeek from "@/components/SelectorHistoryWeek";
 import WeatherDataTimeline from "@/components/WeatherDataTimeline";
 import {formatDateToDayMonth} from "@/helpers";
 
+/**
+ * A page showing historic weather forecasts for cities.
+ */
 export default {
   name: "PageHistory",
   components: {WeatherDataTimeline, SelectorHistoryWeek},
@@ -62,6 +65,11 @@ export default {
     loadingWeather: null,
   }),
   methods: {
+    /**
+     * Sets up the display data from the selected city and time period.
+     * @param name city name
+     * @param dt date
+     */
     selectHistoryWeather({name, dt}) {
       const msToHour = 36e5;
       this.cityWeather = {
@@ -79,6 +87,10 @@ export default {
     },
   },
   computed: {
+    /**
+     * Gets list of cities and their available weeks of weather data from the store.
+     * @returns {any}
+     */
     cities() {
       return this.$store.getters.citiesAndWeeksOfData;
     },

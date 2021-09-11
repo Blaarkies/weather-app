@@ -33,19 +33,34 @@
 <script>
 import {formatDateToWeekDay} from '@/helpers';
 
+/**
+ * Generic graphing display for data points, adding y-axis labels to denote min, max, and median, and x-axis labels
+ * to denote the closest day of the week.
+ */
 export default {
   name: "SparklineWeather",
   props: {
+    /**
+     * List of weather detail objects to be used as data points.
+     */
     weather: {
       type: Array,
       default: () => ([]),
     },
 
+    /**
+     * Title of graph.
+     */
     title: String,
 
+    /**
+     * Unit of measure used for the y-axis labels.
+     */
     unitOfMeasure: String,
 
-    // callback that selects the graph y-values
+    /**
+     * Callback that selects the graph y-axis label names.
+     */
     valueSelector: {
       type: Function,
       default: () => ((i) => i),
@@ -53,10 +68,20 @@ export default {
   },
 
   computed: {
+    /**
+     * Values used on the vertical axis, like temperature, wind speed, or humidity.
+     * @returns {number[]}
+     */
     yValues() {
       return this.weather.map(this.valueSelector);
     },
 
+    /**
+     * Finds the day of the week name for each data point, and attempts to show the midnight points of the week
+     * with the name of the day. The final list contains mostly empty strings, with only specific elements named
+     * as week day strings.
+     * @returns {string[]}
+     */
     xLabels() {
       if (!this.weather.length) {
         return [];
@@ -85,14 +110,18 @@ export default {
           .output;
     },
 
+    /**
+     * Finds the Minimum, Median, and Maximum of all data points, and uses their values as y-axis labels
+     * @returns {string[]}
+     */
     yLabels() {
       if (!this.weather.length) {
         return [];
       }
       let maxIndex = this.weather.length - 1;
       let indexesToInspect = [0, .5, 1].map(r => Math.floor(maxIndex * r));
-      let weatherSortedByValueSelector = this.weather
-          .slice().sort((a, b) => this.valueSelector(b) - this.valueSelector(a));
+      let weatherSortedByValueSelector = this.weather.slice()
+          .sort((a, b) => this.valueSelector(b) - this.valueSelector(a));
       return indexesToInspect.map(inspectIndex =>
           this.valueSelector(weatherSortedByValueSelector[inspectIndex]).toFixed(0));
     },

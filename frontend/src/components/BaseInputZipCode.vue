@@ -5,10 +5,14 @@
       v-model="zipCode"
       :rules="[germanZipCodeRule]"
       @input="tryToEmit($event)"
+      autocomplete="false"
   />
 </template>
 
 <script>
+/**
+ * Input component for zip codes.
+ */
 export default {
   name: "BaseInputZipCode",
   emits: {inputZipCode: Number},
@@ -18,13 +22,20 @@ export default {
   }),
 
   methods: {
+    /**
+     * Attempts to emit the user input value, if it passes validation.
+     */
     tryToEmit(value) {
       if (value && this.germanZipCodeRule(value) === true) {
         this.$emit('inputZipCode', value);
       }
     },
 
+    /**
+     * Validation rules according to german city zipcode rules.
+     */
     germanZipCodeRule(zipCode) {
+      // Some numbers allowed by this are not real zip codes, but the alternative is to load a list of 2000 zip codes.
       if (zipCode?.length === 0) {
         return true;
       }

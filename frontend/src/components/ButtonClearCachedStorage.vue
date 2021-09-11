@@ -41,11 +41,22 @@
 <script>
 import {finalize, interval, map, Subject, takeUntil, takeWhile} from "rxjs";
 
+/**
+ * Confirmation button requiring 2 clicks in 5 seconds to confirm action.
+ */
 export default {
   name: "ButtonClearCachedStorage",
   data: () => ({
+    /**
+     * True when the button is in a waiting state. During this time, a second click will call the action function.
+     */
     shouldClickAgain: null,
+
+    /**
+     * Number used to slowly tick up the progress bar animation to show time passing by.
+     */
     waitValue: null,
+
     unsubscribe$: new Subject(),
     tooltipKey: 0,
     snackBarOpen: null,
@@ -53,15 +64,25 @@ export default {
     snackBarMessage: null,
   }),
   computed: {
+    /**
+     * Checks if the local storage cache has any weather data inside.
+     * @returns {boolean}
+     */
     hasDataInCache() {
       return this.$store.getters.citiesAndWeeksOfData.length > 0;
     },
   },
   methods: {
+    /**
+     * Called by button on click. From an idle state, the first click will cause this to go into a waiting state for
+     * 5 seconds. If clicked again during the waiting state, the clearCachedStorage() function is actioned.
+     * If left to run out of time, it will return to an idle state without actioning the clearCachedStorage() function.
+     */
     tryToConfirm() {
       if (!this.waitValue) {
         this.shouldClickAgain = true;
         this.waitValue = 1;
+        // start a timer that periodically sends a new larger integer down the "pipe"
         interval(200).pipe(
             map(i => i * 5),
             finalize(() => {
@@ -72,14 +93,18 @@ export default {
             takeWhile(i => i <= 115),
             takeUntil(this.unsubscribe$))
             .subscribe(i => this.waitValue = i);
+
       } else {
         if (this.waitValue >= 0) {
-          this.unsubscribe$.next();
+          this.unsubscribe$.next(); // stops any running timers
           this.clearCachedStorage();
         }
       }
     },
 
+    /**
+     * Clear the local cache storage and informs the user thereof.
+     */
     clearCachedStorage() {
       this.$store.dispatch('resetCachedStore');
       this.$root.snackbar.postWarning({message: 'Cleared weather data in cached storage'})
@@ -88,7 +113,7 @@ export default {
   watch: {
     shouldClickAgain(value) {
       if (!value) {
-        this.tooltipKey++
+        this.tooltipKey++; // reset the tooltip element to close it
       }
     },
   },
