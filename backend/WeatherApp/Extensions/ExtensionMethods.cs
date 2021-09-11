@@ -21,7 +21,7 @@ namespace WeatherApp.Extensions
             return baseValue - 273.15m;
         }
 
-        public static String DegreesToCardinal(this decimal baseValue)
+        public static string DegreesToCardinal(this decimal baseValue)
         {
             var sectionIndex = Math.Floor(baseValue / 22.5m + 0.5m);
             var directions = new[]

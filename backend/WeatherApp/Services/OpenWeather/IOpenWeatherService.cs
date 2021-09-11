@@ -7,6 +7,6 @@ namespace WeatherApp.Services.OpenWeather
 {
     public interface IOpenWeatherService
     {
-        Task<OpenWeatherResponse> Get5DayForecast(String city, String zipCode, CancellationToken cancellationToken);
+        Task<OpenWeatherResponse> Get5DayForecast(string city, string zipCode, CancellationToken cancellationToken);
     }
 }

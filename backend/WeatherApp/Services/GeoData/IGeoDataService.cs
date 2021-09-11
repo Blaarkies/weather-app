@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WeatherApp.Domain;
-using WeatherApp.Domain.OpenWeather;
 
 namespace WeatherApp.Services.GeoData
 {
     public interface IGeoDataService
     {
-        IEnumerable<String> QueryCitiesForName(String search);
-        IEnumerable<String> AllCities();
+        Task<IEnumerable<string>> QueryCitiesForName(string search);
+        Task<IEnumerable<string>> AllCities();
     }
 }

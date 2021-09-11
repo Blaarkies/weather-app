@@ -4,6 +4,6 @@ namespace WeatherApp.Services.Serializer
 {
     public interface ISerializerService
     {
-        String Serialize<T>(T data);
+        string Serialize<T>(T data);
     }
 }

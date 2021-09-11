@@ -27,9 +27,9 @@ namespace WeatherApp.Controllers
         }
 
         [HttpGet("cities-by-name/{search}")]
-        public async Task<IActionResult> Get(String search, CancellationToken cancellationToken)
+        public async Task<IActionResult> Get(string search, CancellationToken cancellationToken)
         {
-            var cities = _geoDataService.QueryCitiesForName(search);
+            var cities = await _geoDataService.QueryCitiesForName(search);
 
             return new OkObjectResult(_serializerService.Serialize(cities));
         }
@@ -37,7 +37,7 @@ namespace WeatherApp.Controllers
         [HttpGet("cities")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var cities = _geoDataService.AllCities();
+            var cities = await _geoDataService.AllCities();
             return new OkObjectResult(_serializerService.Serialize(cities));
         }
     }

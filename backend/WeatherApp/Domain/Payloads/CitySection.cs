@@ -7,8 +7,8 @@ namespace WeatherApp.Controllers
     {
         public decimal Latitude;
         public decimal Longitude;
-        public String Country;
-        public String Name;
+        public string Country;
+        public string Name;
         public int Population;
         public TimeSpan Sunrise;
         public TimeSpan Sunset;

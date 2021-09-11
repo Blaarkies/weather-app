@@ -7,11 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
 using WeatherApp.Domain;
 using WeatherApp.Services.GeoData;
+using WeatherApp.Services.JsonJsonFileReader;
 using WeatherApp.Services.OpenWeather;
 using WeatherApp.Services.Serializer;
+using WeatherApp.Services.Settings;
 
 namespace WeatherApp
 {
@@ -27,7 +28,8 @@ namespace WeatherApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(new Settings(Configuration));
+            services.AddSingleton<ISettingsService>(new SettingsService(Configuration));
+            services.AddSingleton<IJsonFileReaderService>(new JsonFileReaderService());
             services.AddSingleton(new OpenWeatherSettings(Configuration));
             services.AddSingleton<IOpenWeatherService, OpenWeatherService>();
             services.AddSingleton<IGeoDataService, GeoDataService>();
@@ -50,7 +52,13 @@ namespace WeatherApp
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
-                    builder => { builder.WithOrigins("http://localhost:8080"); });
+                    builder =>
+                    {
+                        builder
+                            .WithMethods("GET")
+                            .AllowAnyOrigin();
+                        // WithOrigins("http://localhost:8080", "http://192.168.1.179:8080")
+                    });
             });
 
             var config = new HttpConfiguration();

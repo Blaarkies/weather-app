@@ -15,9 +15,9 @@ namespace WeatherApp.Controllers
         public decimal WindDirectionDegrees;
         public decimal WindSpeed;
         public decimal WindGusts;
-        public String Icon;
-        public String Description;
-        public String WindDirection;
+        public string Icon;
+        public string Description;
+        public string WindDirection;
 
         public ForecastSection(OpenWeatherForecast openWeatherForecast)
         {

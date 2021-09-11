@@ -78,7 +78,7 @@ namespace WeatherApp.Services.OpenWeather
     public class OpenWeatherMessage
     {
         [JsonProperty("cod")]
-        public String Cod;
+        public string Cod;
         [JsonProperty("message")]
         public int Message;
     }

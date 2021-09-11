@@ -6,7 +6,7 @@ namespace WeatherApp.Domain.OpenWeather
     public class OpenWeatherResponse
     {
         [JsonProperty("cod")]
-        public String Cod;
+        public string Cod;
         [JsonProperty("message")]
         public int Message;
         [JsonProperty("cnt")]
@@ -22,7 +22,7 @@ namespace WeatherApp.Domain.OpenWeather
         [JsonProperty("dt")]
         public int Dt;
         [JsonProperty("dt_txt")]
-        public String Dt_txt;
+        public string Dt_txt;
         [JsonProperty("main")]
         public OpenWeatherMainDetails Main;
         [JsonProperty("weather")]
@@ -50,7 +50,7 @@ namespace WeatherApp.Domain.OpenWeather
     public class OpenWeatherSpecificCloud
     {
         [JsonProperty("all")]
-        public String All;
+        public string All;
     }
 
     public class OpenWeatherWeatherSummary
@@ -58,11 +58,11 @@ namespace WeatherApp.Domain.OpenWeather
         [JsonProperty("id")]
         public int Id;
         [JsonProperty("main")]
-        public String Main;
+        public string Main;
         [JsonProperty("description")]
-        public String Description;
+        public string Description;
         [JsonProperty("icon")]
-        public String Icon;
+        public string Icon;
     }
 
     public class OpenWeatherMainDetails
@@ -92,11 +92,11 @@ namespace WeatherApp.Domain.OpenWeather
         [JsonProperty("id")]
         public int Id;
         [JsonProperty("name")]
-        public String Name;
+        public string Name;
         [JsonProperty("coord")]
         public OpenWeatherCoordinates Coord;
         [JsonProperty("country")]
-        public String Country;
+        public string Country;
         [JsonProperty("population")]
         public int Population;
         [JsonProperty("timezone")]
