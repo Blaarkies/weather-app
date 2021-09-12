@@ -36,6 +36,8 @@ namespace WeatherApp
 
             services.AddTransient<HttpClient>();
 
+            services.AddApplicationInsightsTelemetry();
+
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {

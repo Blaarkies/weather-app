@@ -13,6 +13,11 @@ dotnet user-secrets init
 dotnet user-secrets set "OpenWeather:ServiceApiKey" "<myValidApiKey>"
 ```
 
+In addition, the Crystal Weather API supports Microsoft Azure Application Insights for logging critical events. Run this command with your App Insights InstrumentationKey if you wish to log events to your Azure resource.
+```
+dotnet user-secrets set "ApplicationInsights:InstrumentationKey" "<myInstrumentationKey>"
+```
+
 More help can be found at [Safe storage of app secrets in development in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows).
 
 ### On Startup
@@ -25,6 +30,8 @@ The API will set the following origins to be allowed using CORS:
   - This is useful for visual UI debugging on mobile devices.
 - `https://crystal-weather.blaarkies.com`
   - Production environment of hosted frontend
+
+If hosting the frontend from a different origin, that origin will need to be added into the CORS setup.
 
 ### Application Configuration
 
