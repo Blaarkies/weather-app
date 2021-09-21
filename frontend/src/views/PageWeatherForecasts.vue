@@ -53,6 +53,18 @@
         />
       </v-card>
     </v-expand-transition>
+
+
+    <v-expand-transition>
+      <v-card
+          class="no-data-card"
+          v-if="weather.length === 0"
+      >
+        <v-card-title>No city selected</v-card-title>
+        <v-card-subtitle>Start by selecting a city by name, or provide a zip code</v-card-subtitle>
+        <v-icon class="icon-pictogram">mdi-city-variant-outline</v-icon>
+      </v-card>
+    </v-expand-transition>
   </div>
 </template>
 
@@ -167,6 +179,7 @@ export default {
   grid-template-areas:
     'title'
     'selectors'
+    'no-data'
     'loading'
     'current'
     'timeline';
@@ -194,6 +207,11 @@ export default {
     grid-area: timeline;
     padding: var(--padding-card);
   }
+
+  .no-data-card {
+    grid-area: no-data;
+    padding: var(--padding-card);
+  }
 }
 
 @media screen and ($media-above-tablets) {
@@ -209,6 +227,10 @@ export default {
 
     .current-weather-card {
       align-self: start;
+    }
+
+    .no-data-card {
+      grid-area: current;
     }
   }
 }

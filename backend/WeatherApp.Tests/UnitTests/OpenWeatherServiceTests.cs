@@ -1,11 +1,9 @@
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using RichardSzalay.MockHttp;
 using WeatherApp.Domain;
 using WeatherApp.Services.OpenWeather;
 
