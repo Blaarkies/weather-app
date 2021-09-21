@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
-using WeatherApp.Services.JsonJsonFileReader;
+using WeatherApp.Services.JsonFileReader;
 
 namespace WeatherApp.Tests.UnitTests
 {

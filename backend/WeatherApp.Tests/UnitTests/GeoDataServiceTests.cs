@@ -9,7 +9,7 @@ using NUnit.Framework;
 using RichardSzalay.MockHttp;
 using WeatherApp.Domain;
 using WeatherApp.Services.GeoData;
-using WeatherApp.Services.JsonJsonFileReader;
+using WeatherApp.Services.JsonFileReader;
 
 namespace WeatherApp.Tests.UnitTests
 {
@@ -25,7 +25,6 @@ namespace WeatherApp.Tests.UnitTests
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*").Respond("application/json", "{'test-error' : 'no-content'}");
-            var mockHttpClient = new HttpClient(mockHttp);
 
             var mockJsonFileReaderService = Mock.Of<IJsonFileReaderService>();
             Mock.Get(mockJsonFileReaderService)
@@ -35,7 +34,6 @@ namespace WeatherApp.Tests.UnitTests
             return new GeoDataService(
                 mockLogger,
                 mockSettings,
-                mockHttpClient,
                 mockJsonFileReaderService);
         }
 

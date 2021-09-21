@@ -8,14 +8,14 @@ namespace WeatherApp.Domain.Payloads
     /// </summary>
     public class CitySection
     {
-        public decimal Latitude;
-        public decimal Longitude;
-        public string Country;
-        public string Name;
-        public int Population;
-        public TimeSpan Sunrise;
-        public TimeSpan Sunset;
-        public TimeSpan Timezone;
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        public string Country { get; set; }
+        public string Name { get; set; }
+        public int Population { get; set; }
+        public TimeSpan Sunrise { get; set; }
+        public TimeSpan Sunset { get; set; }
+        public TimeSpan Timezone { get; set; }
 
         public CitySection(OpenWeatherResponse openWeatherResponse)
         {

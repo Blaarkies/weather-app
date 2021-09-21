@@ -58,7 +58,7 @@
 
 <script>
 import BaseSelectorCity from "@/components/BaseSelectorCity";
-import {getForecast, getMessageFromError} from "@/helpers";
+import {getForecastByCity, getForecastByZipCode, getMessageFromError} from "@/helpers";
 import BaseInputZipCode from "@/components/BaseInputZipCode";
 import CurrentWeather from '@/components/CurrentWeather';
 import WeatherDataTimeline from '@/components/WeatherDataTimeline';
@@ -101,7 +101,7 @@ export default {
     async setWeatherByCityName(cityName) {
       this.loadingWeather = true;
 
-      getForecast(cityName)
+      getForecastByCity(cityName)
           .then(({city, weatherList}) => this.setWeather(city, weatherList))
           .catch(error => {
             this.setSnackBarMessage(error);
@@ -124,7 +124,7 @@ export default {
     async setWeatherByZipCode(zipCode) {
       this.loadingWeather = true;
 
-      getForecast(null, zipCode)
+      getForecastByZipCode(zipCode)
           .then(({city, weatherList}) => this.setWeather(city, weatherList))
           .catch(error => {
             this.setSnackBarMessage(error);

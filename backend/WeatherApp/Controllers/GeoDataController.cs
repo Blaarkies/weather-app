@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WeatherApp.Services.GeoData;
-using WeatherApp.Services.Serializer;
 
 namespace WeatherApp.Controllers
 {
@@ -15,14 +14,10 @@ namespace WeatherApp.Controllers
     public class GeoDataController : ControllerBase
     {
         private readonly IGeoDataService _geoDataService;
-        private readonly ISerializerService _serializerService;
 
-        public GeoDataController(
-            IGeoDataService geoDataService,
-            ISerializerService serializerService)
+        public GeoDataController(IGeoDataService geoDataService)
         {
             _geoDataService = geoDataService;
-            _serializerService = serializerService;
         }
 
         /// <summary>
@@ -33,7 +28,7 @@ namespace WeatherApp.Controllers
         {
             var cities = await _geoDataService.QueryCitiesForName(search, cancellationToken);
 
-            return new OkObjectResult(_serializerService.Serialize(cities));
+            return Ok(cities);
         }
 
         /// <summary>
@@ -43,7 +38,8 @@ namespace WeatherApp.Controllers
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var cities = await _geoDataService.GetAllCities(cancellationToken);
-            return new OkObjectResult(_serializerService.Serialize(cities));
+
+            return Ok(cities);
         }
     }
 }

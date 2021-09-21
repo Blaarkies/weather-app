@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace WeatherApp.Services.JsonJsonFileReader
+namespace WeatherApp.Services.JsonFileReader
 {
     /// <inheritdoc/>
     public class JsonFileReaderService : IJsonFileReaderService

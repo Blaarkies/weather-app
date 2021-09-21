@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WeatherApp.Domain.Payloads;
 using WeatherApp.Services.OpenWeather;
-using WeatherApp.Services.Serializer;
 
 namespace WeatherApp.Controllers
 {
@@ -17,36 +15,47 @@ namespace WeatherApp.Controllers
     public class WeatherController : ControllerBase
     {
         private readonly IOpenWeatherService _openWeatherService;
-        private readonly ISerializerService _serializerService;
 
-        public WeatherController(
-            IOpenWeatherService openWeatherService,
-            ISerializerService serializerService)
+        public WeatherController(IOpenWeatherService openWeatherService)
         {
             _openWeatherService = openWeatherService;
-            _serializerService = serializerService;
         }
 
         /// <summary>
-        /// Returns a 5 day forecast for the matching [city] or [zipcode]. Upstream exceptions are transformed
+        /// Returns a 5 day forecast for the matching [city]. Upstream exceptions are transformed
         /// into HttpContentResult messages for frontends to display.
         /// </summary>
-        [HttpGet("forecast")]
-        public async Task<IActionResult> GetForecast(string city, string zipCode, CancellationToken cancellationToken)
+        [HttpGet("forecast/city")]
+        public async Task<IActionResult> GetForecastByCity(string city, CancellationToken cancellationToken)
         {
             try
             {
-                var response = await _openWeatherService.Get5DayForecast(city, zipCode, cancellationToken);
+                var response = await _openWeatherService.Get5DayForecastForCity(city, cancellationToken);
                 var weatherSummary = new WeatherPayload(response);
-                return new OkObjectResult(_serializerService.Serialize(weatherSummary));
+                return Ok(weatherSummary);
             }
             catch (Exception e)
             {
-                return new ContentResult
-                {
-                    StatusCode = StatusCodes.Status404NotFound,
-                    Content = e.Message,
-                };
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a 5 day forecast for the matching [zipcode]. Upstream exceptions are transformed
+        /// into HttpContentResult messages for frontends to display.
+        /// </summary>
+        [HttpGet("forecast/zip-code")]
+        public async Task<IActionResult> GetForecastByZipCode(string zipCode, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var response = await _openWeatherService.Get5DayForecastForZipCode(zipCode, cancellationToken);
+                var weatherSummary = new WeatherPayload(response);
+                return Ok(weatherSummary);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
     }

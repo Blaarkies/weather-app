@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
+using Flurl;
+using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using WeatherApp.Domain;
 using WeatherApp.Domain.OpenWeather;
 
@@ -16,22 +14,14 @@ namespace WeatherApp.Services.OpenWeather
     public class OpenWeatherService : IOpenWeatherService
     {
         private readonly ILogger<OpenWeatherService> _logger;
-        private readonly HttpClient _client;
         private readonly OpenWeatherSettings _openWeatherSettings;
 
         public OpenWeatherService(
             ILogger<OpenWeatherService> logger,
-            HttpClient client,
             IOptions<OpenWeatherSettings> openWeatherSettings)
         {
             _logger = logger;
-            _client = client;
             _openWeatherSettings = openWeatherSettings.Value;
-
-            client.BaseAddress = new Uri($"{_openWeatherSettings.Url}/");
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -44,39 +34,53 @@ namespace WeatherApp.Services.OpenWeather
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">When OpenWeatherApi responds with a fail status code</exception>
-        public async Task<OpenWeatherResponse> Get5DayForecast(
-            string city,
-            string zipCode,
-            CancellationToken cancellationToken)
+        public async Task<OpenWeatherResponse> Get5DayForecastForCity(string city, CancellationToken cancellationToken)
         {
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-            if (city != null)
+            try
             {
-                queryString.Add("q", city);
+                return await GetOpenWeatherForecastQuery()
+                    .SetQueryParams(new { q = city })
+                    .GetJsonAsync<OpenWeatherResponse>(cancellationToken);
             }
-
-            if (zipCode != null)
+            catch (FlurlHttpException ex)
             {
-                queryString.Add("zip", zipCode);
-            }
+                var error = await ex.GetResponseJsonAsync<OpenWeatherMessage>();
+                var errorMessage = error.Message;
 
-            queryString.Add("appid", _openWeatherSettings.ServiceApiKey);
-            var query = $"forecast?{queryString}";
-
-            var response = await _client.GetAsync(query, cancellationToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                var jsonPayload = await response.Content.ReadAsStringAsync(cancellationToken);
-                var errorMessage = JObject.Parse(jsonPayload)["message"].ToString();
-
-                WriteMessage($"Could not get forecast for city:[{city}] zipcode:[{zipCode}]. " + errorMessage);
+                WriteMessage($"Could not get forecast for city:[{city}]. " + errorMessage);
 
                 throw new ArgumentException(errorMessage);
             }
+        }
 
-            var result = await response.Content.ReadAsAsync<OpenWeatherResponse>(cancellationToken);
+        /// <inheritdoc/>
+        /// <exception cref="ArgumentException">When OpenWeatherApi responds with a fail status code</exception>
+        public async Task<OpenWeatherResponse> Get5DayForecastForZipCode(
+            string zipCode,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await GetOpenWeatherForecastQuery()
+                    .SetQueryParams(new { zip = $"{zipCode},DE" })
+                    .GetJsonAsync<OpenWeatherResponse>(cancellationToken);
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseJsonAsync<OpenWeatherMessage>();
+                var errorMessage = error.Message;
 
-            return result;
+                WriteMessage($"Could not get forecast for zip code:[{zipCode}]. " + errorMessage);
+
+                throw new ArgumentException(errorMessage);
+            }
+        }
+
+        private Url GetOpenWeatherForecastQuery()
+        {
+            return _openWeatherSettings.Url
+                .AppendPathSegment("forecast")
+                .SetQueryParams(new { appid = _openWeatherSettings.ServiceApiKey });
         }
     }
 }

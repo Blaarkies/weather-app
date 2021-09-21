@@ -13,17 +13,10 @@ namespace WeatherApp.Tests.UnitTests
 {
     public class OpenWeatherServiceTests
     {
-        private MockHttpMessageHandler _mockHttp;
-        private HttpClient _mockHttpClient;
 
         [SetUp]
         public void Setup()
         {
-            _mockHttp = new MockHttpMessageHandler();
-            _mockHttp
-                .When("*")
-                .Respond("application/json", "{'test-error' : 'no-content'}");
-            _mockHttpClient = new HttpClient(_mockHttp);
         }
 
         private OpenWeatherService CreateService()
@@ -38,7 +31,6 @@ namespace WeatherApp.Tests.UnitTests
 
             return new OpenWeatherService(
                 mockLogger,
-                _mockHttpClient,
                 mockOpenWeatherSettings);
         }
 
@@ -47,10 +39,9 @@ namespace WeatherApp.Tests.UnitTests
         {
             var service = CreateService();
 
-            var result = await service.Get5DayForecast("test-city", null, CancellationToken.None);
+            var result = await service.Get5DayForecastForCity("test-city", CancellationToken.None);
 
             Assert.NotNull(result);
-            _mockHttp.Expect(HttpMethod.Get, "");
         }
 
         [Test]
@@ -58,10 +49,9 @@ namespace WeatherApp.Tests.UnitTests
         {
             var service = CreateService();
 
-            var result = await service.Get5DayForecast(null, "90001", CancellationToken.None);
+            var result = await service.Get5DayForecastForZipCode("90001", CancellationToken.None);
 
             Assert.NotNull(result);
-            _mockHttp.Expect(HttpMethod.Get, "");
         }
     }
 }

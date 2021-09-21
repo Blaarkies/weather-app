@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace WeatherApp.Services.JsonJsonFileReader
+namespace WeatherApp.Services.JsonFileReader
 {
     /// <summary>
     /// Provides file reads into string json format.

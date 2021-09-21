@@ -11,6 +11,6 @@ namespace WeatherApp.Domain.OpenWeather
         [JsonProperty("cod")]
         public string Cod;
         [JsonProperty("message")]
-        public int Message;
+        public string Message;
     }
 }

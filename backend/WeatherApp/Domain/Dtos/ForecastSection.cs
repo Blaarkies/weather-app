@@ -9,18 +9,18 @@ namespace WeatherApp.Domain.Payloads
     /// </summary>
     public class ForecastSection
     {
-        public DateTime DateTime;
-        public decimal TemperatureFeel;
-        public decimal Temperature;
-        public decimal TemperatureMax;
-        public decimal TemperatureMin;
-        public decimal Humidity;
-        public decimal WindDirectionDegrees;
-        public decimal WindSpeed;
-        public decimal WindGusts;
-        public string Icon;
-        public string Description;
-        public string WindDirection;
+        public DateTime DateTime  { get; set; }
+        public decimal TemperatureFeel  { get; set; }
+        public decimal Temperature  { get; set; }
+        public decimal TemperatureMax  { get; set; }
+        public decimal TemperatureMin  { get; set; }
+        public decimal Humidity  { get; set; }
+        public decimal WindDirectionDegrees  { get; set; }
+        public decimal WindSpeed  { get; set; }
+        public decimal WindGusts  { get; set; }
+        public string Icon  { get; set; }
+        public string Description  { get; set; }
+        public string WindDirection  { get; set; }
 
         public ForecastSection(OpenWeatherForecast openWeatherForecast)
         {

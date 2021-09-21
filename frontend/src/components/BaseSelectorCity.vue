@@ -53,7 +53,9 @@ export default {
       && this.querySelections(value)
     },
     select(value) {
-      this.$emit('select', value ?? '');
+      if (value) {
+        this.$emit('select', value);
+      }
     },
   },
 

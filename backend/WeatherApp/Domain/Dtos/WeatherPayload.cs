@@ -9,8 +9,8 @@ namespace WeatherApp.Domain.Payloads
     /// </summary>
     public class WeatherPayload
     {
-        public IEnumerable<ForecastSection> WeatherList;
-        public CitySection City;
+        public IEnumerable<ForecastSection> WeatherList { get; set; }
+        public CitySection City { get; set; }
 
         public WeatherPayload(OpenWeatherResponse openWeatherResponse)
         {

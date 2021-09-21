@@ -9,9 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WeatherApp.Domain;
 using WeatherApp.Services.GeoData;
-using WeatherApp.Services.JsonJsonFileReader;
+using WeatherApp.Services.JsonFileReader;
 using WeatherApp.Services.OpenWeather;
-using WeatherApp.Services.Serializer;
 
 namespace WeatherApp
 {
@@ -29,12 +28,9 @@ namespace WeatherApp
             services.Configure<Settings>(Configuration.GetSection("Settings"));
             services.Configure<OpenWeatherSettings>(Configuration.GetSection("OpenWeather"));
 
-            services.AddSingleton<IJsonFileReaderService, JsonFileReaderService>();
-            services.AddSingleton<IOpenWeatherService, OpenWeatherService>();
-            services.AddSingleton<IGeoDataService, GeoDataService>();
-            services.AddSingleton<ISerializerService, SerializerService>();
-
-            services.AddTransient<HttpClient>();
+            services.AddScoped<IJsonFileReaderService, JsonFileReaderService>();
+            services.AddScoped<IOpenWeatherService, OpenWeatherService>();
+            services.AddScoped<IGeoDataService, GeoDataService>();
 
             services.AddApplicationInsightsTelemetry();
 
