@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using WeatherApp.Domain.OpenWeather;
+using WeatherApp.Domain.Dtos.OpenWeather;
 
 namespace WeatherApp.Services.OpenWeather
 {

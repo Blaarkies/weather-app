@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WeatherApp.Domain.OpenWeather
+namespace WeatherApp.Domain.Dtos.OpenWeather
 {
     /// <summary>
     /// Partial definition of the responses from the OpenWeatherApi, denoting the [message] used to relay requests

@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WeatherApp.Domain.Payloads;
+using WeatherApp.Attributes;
+using WeatherApp.Domain.Dtos;
 using WeatherApp.Services.OpenWeather;
 
 namespace WeatherApp.Controllers
@@ -10,6 +11,7 @@ namespace WeatherApp.Controllers
     /// <summary>
     /// Handles requests related to weather forecasts for a particular location.
     /// </summary>
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherController : ControllerBase

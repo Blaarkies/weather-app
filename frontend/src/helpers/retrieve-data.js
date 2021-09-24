@@ -1,4 +1,5 @@
 import axios from "axios";
+import {authHeader} from '@/helpers/auth-helper';
 
 /**
  * API url based on build environment, read from .env files.
@@ -12,7 +13,7 @@ const apiUrl = process.env.VUE_APP_BASE_URL;
  */
 export async function getForecastByCity(city) {
     const response = await axios.get(`${apiUrl}Weather/forecast/city`,
-        {params: {city}});
+        {params: {city}, headers: authHeader()});
     return response.data;
 }
 
@@ -23,7 +24,7 @@ export async function getForecastByCity(city) {
  */
 export async function getForecastByZipCode(zipCode) {
     const response = await axios.get(`${apiUrl}Weather/forecast/zip-code`,
-        {params: {zipCode}});
+        {params: {zipCode}, headers: authHeader()});
     return response.data;
 }
 
@@ -33,7 +34,8 @@ export async function getForecastByZipCode(zipCode) {
  * @returns {Promise<array<string>>} list of city names
  */
 export async function getCitiesByName(search) {
-    const response = await axios.get(`${apiUrl}GeoData/cities-by-name/${search}`);
+    const response = await axios.get(`${apiUrl}GeoData/cities-by-name/${search}`,
+        {headers: authHeader()});
     return response.data;
 }
 
@@ -42,6 +44,7 @@ export async function getCitiesByName(search) {
  * @returns {Promise<array<string>>} list of city names
  */
 export async function getCitiesAll() {
-    const response = await axios.get(`${apiUrl}GeoData/cities`);
+    const response = await axios.get(`${apiUrl}GeoData/cities`,
+        {headers: authHeader()});
     return response.data;
 }

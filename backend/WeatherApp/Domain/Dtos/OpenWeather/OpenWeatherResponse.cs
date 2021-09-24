@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WeatherApp.Domain.OpenWeather
+namespace WeatherApp.Domain.Dtos.OpenWeather
 {
     /// <summary>
     /// Typical response from OpenWeatherApi, specifically for the 5 day forecast request

@@ -1,5 +1,5 @@
 ﻿using System;
-using WeatherApp.Domain.OpenWeather;
+using WeatherApp.Domain.Dtos.OpenWeather;
 using WeatherApp.Extensions;
 
 namespace WeatherApp.Domain.Payloads

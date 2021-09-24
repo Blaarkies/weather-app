@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WeatherApp.Domain.OpenWeather;
+using WeatherApp.Domain.Dtos.OpenWeather;
+using WeatherApp.Domain.Payloads;
 
-namespace WeatherApp.Domain.Payloads
+namespace WeatherApp.Domain.Dtos
 {
     /// <summary>
     /// Frontend payload containing the selected city and it's forecast period.

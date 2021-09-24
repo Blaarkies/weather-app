@@ -6,7 +6,7 @@ using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WeatherApp.Domain;
-using WeatherApp.Domain.OpenWeather;
+using WeatherApp.Domain.Dtos.OpenWeather;
 
 namespace WeatherApp.Services.OpenWeather
 {

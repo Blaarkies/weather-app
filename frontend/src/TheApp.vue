@@ -30,6 +30,30 @@
 
         <v-app-bar-title class="app-bar-title-no-truncation">{{ title }}</v-app-bar-title>
 
+        <v-menu
+            absolute
+            left
+            top
+            offset-y
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                v-bind="attrs"
+                v-on="on"
+                text
+                class="text-pascal-case"
+                v-if="user"
+            >
+              {{user.username}}
+            </v-btn>
+          </template>
+
+          <v-list class="menu-list">
+            <v-list-item @click="void 0">Settings</v-list-item>
+            <v-list-item @click="logOut()">Log out</v-list-item>
+          </v-list>
+        </v-menu>
+
         <ButtonClearCachedStorage/>
       </div>
     </v-app-bar>
@@ -47,6 +71,7 @@
 <script>
 import ButtonClearCachedStorage from "@/components/ButtonClearCachedStorage";
 import TheSnackbar from "@/components/TheSnackbar";
+import {authService} from '@/services';
 
 export default {
   name: 'TheApp',
@@ -59,9 +84,18 @@ export default {
     title() {
       return this.$route.name;
     },
+    user() {
+      return authService.getLoggedInUser();
+    },
   },
   mounted() {
     this.$root.snackbar = this.$refs.snackbar;
+  },
+  methods: {
+    logOut() {
+      authService.logout();
+      location.reload();
+    },
   },
 };
 </script>
@@ -98,12 +132,16 @@ export default {
   display: grid;
   gap: var(--gap-content-section);
   align-items: center;
-  grid-template-columns: max-content auto max-content;
+  grid-template-columns: max-content auto max-content max-content;
 
   .app-bar-title-no-truncation {
     .v-app-bar-title__content {
       width: unset;
     }
+  }
+
+  .text-pascal-case {
+    text-transform: capitalize;
   }
 }
 

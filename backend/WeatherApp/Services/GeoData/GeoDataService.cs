@@ -18,19 +18,17 @@ namespace WeatherApp.Services.GeoData
     {
         private readonly ILogger<GeoDataService> _logger;
         private readonly Settings _settings;
-        private readonly IJsonFileReaderService _jsonFileReaderService;
-        private IEnumerable<string> _germanCityNames;
+        private readonly IEnumerable<string> _germanCityNames;
 
         public GeoDataService(
             ILogger<GeoDataService> logger,
-            IOptions<Settings> settingsService,
-            IJsonFileReaderService jsonFileReaderService)
+            IOptions<Settings> settings,
+            IJsonFileReaderService jsonFileReader)
         {
             _logger = logger;
-            _settings = settingsService.Value;
-            _jsonFileReaderService = jsonFileReaderService;
+            _settings = settings.Value;
 
-            var json = _jsonFileReaderService.Read("Assets/german-cities.json").Result;
+            var json = jsonFileReader.Read("Assets/german-cities.json").Result;
             _germanCityNames = JsonConvert.DeserializeObject<IEnumerable<string>>(json);
         }
 

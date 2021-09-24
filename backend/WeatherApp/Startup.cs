@@ -1,4 +1,3 @@
-using System.Net.Http;
 using System.Text.Json;
 using System.Web.Http;
 using Microsoft.AspNetCore.Builder;
@@ -8,9 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WeatherApp.Domain;
+using WeatherApp.Middleware;
 using WeatherApp.Services.GeoData;
 using WeatherApp.Services.JsonFileReader;
 using WeatherApp.Services.OpenWeather;
+using WeatherApp.Services.User;
 
 namespace WeatherApp
 {
@@ -42,6 +43,9 @@ namespace WeatherApp
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 });
 
+
+            services.AddScoped<IUserService, UserService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrystalWeatherApp", Version = "v1" });
@@ -53,7 +57,8 @@ namespace WeatherApp
                     builder =>
                     {
                         builder
-                            .WithMethods("GET")
+                            .WithMethods("GET", "POST")
+                            .AllowAnyHeader()
                             .WithOrigins(
                                 "http://localhost:8080",
                                 "http://192.168.1.179:8080",
@@ -80,12 +85,13 @@ namespace WeatherApp
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CrystalWeatherApp v1"));
             }
 
+            app.UseMiddleware<JwtMiddleware>();
+
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

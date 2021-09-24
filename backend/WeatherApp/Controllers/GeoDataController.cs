@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WeatherApp.Attributes;
 using WeatherApp.Services.GeoData;
 
 namespace WeatherApp.Controllers
@@ -9,6 +10,7 @@ namespace WeatherApp.Controllers
     /// <summary>
     /// Handles geographical data requests, like city names.
     /// </summary>
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class GeoDataController : ControllerBase

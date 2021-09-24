@@ -6,5 +6,6 @@
     public class Settings
     {
         public int PageSize { get; set; }
+        public string JwtKey { get; set; }
     }
 }
